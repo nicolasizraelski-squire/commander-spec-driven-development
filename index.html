@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spec-Driven Development — Squire Mobile Commander</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-secondary: #f8f9fb;
+      --bg-tertiary: #f0f2f5;
+      --bg-code: #f4f5f7;
+      --bg-callout: #e8f4fd;
+      --bg-callout-warn: #fff8e6;
+      --bg-callout-success: #e6f9ed;
+      --bg-phase-doc: #dbeafe;
+      --bg-phase-plan: #ede9fe;
+      --bg-phase-impl: #dcfce7;
+      --border: #e2e5ea;
+      --border-light: #eef0f3;
+      --text: #1a1d23;
+      --text-secondary: #5a6070;
+      --text-tertiary: #8890a0;
+      --text-code: #d63384;
+      --accent: #2563eb;
+      --accent-light: #3b82f6;
+      --accent-bg: #eff6ff;
+      --phase-doc: #2563eb;
+      --phase-plan: #7c3aed;
+      --phase-impl: #16a34a;
+      --link: #2563eb;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── SIDEBAR NAV ─── */
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 280px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-logo {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-logo h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .sidebar-logo span {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .sidebar nav {
+      padding: 0 12px;
+    }
+
+    .sidebar .nav-group {
+      margin-bottom: 20px;
+    }
+
+    .sidebar .nav-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-tertiary);
+      padding: 0 8px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 8px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s ease;
+      font-weight: 450;
+    }
+
+    .sidebar a:hover {
+      background: var(--bg-tertiary);
+      color: var(--text);
+    }
+
+    .sidebar a.active {
+      background: var(--accent-bg);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .sidebar a .nav-icon {
+      width: 18px;
+      text-align: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .sidebar .nav-sub a {
+      padding-left: 34px;
+      font-size: 13px;
+    }
+
+    /* Mobile toggle */
+    .sidebar-toggle {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 200;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    .main {
+      margin-left: 280px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      background: linear-gradient(135deg, #f8faff 0%, #eef2ff 50%, #f0f7ff 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 48px 56px;
+    }
+
+    .hero-inner {
+      max-width: 820px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero h1 {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 640px;
+    }
+
+    .hero-phases {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .hero-phase {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 18px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .hero-phase .phase-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .hero-phase:nth-child(1) .phase-num { background: var(--phase-doc); }
+    .hero-phase:nth-child(2) .phase-num { background: var(--phase-plan); }
+    .hero-phase:nth-child(3) .phase-num { background: var(--phase-impl); }
+
+    .hero-phase .phase-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .hero-phase .phase-desc {
+      font-size: 12.5px;
+      color: var(--text-tertiary);
+    }
+
+    /* ─── CONTENT SECTIONS ─── */
+    .content {
+      max-width: 820px;
+      padding: 48px 48px 80px;
+    }
+
+    .section {
+      margin-bottom: 56px;
+    }
+
+    .section-anchor {
+      scroll-margin-top: 24px;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 750;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      margin-bottom: 8px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border-light);
+    }
+
+    h2 .phase-tag {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-left: 10px;
+      vertical-align: middle;
+      position: relative;
+      top: -2px;
+    }
+
+    h2 .phase-tag.doc { background: var(--bg-phase-doc); color: var(--phase-doc); }
+    h2 .phase-tag.plan { background: var(--bg-phase-plan); color: var(--phase-plan); }
+    h2 .phase-tag.impl { background: var(--bg-phase-impl); color: var(--phase-impl); }
+
+    h3 {
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: -0.2px;
+      color: var(--text);
+      margin-top: 36px;
+      margin-bottom: 12px;
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 650;
+      color: var(--text);
+      margin-top: 24px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    strong { color: var(--text); font-weight: 600; }
+
+    ul, ol {
+      margin-bottom: 14px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 6px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+
+    li strong { color: var(--text); }
+
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ─── CODE BLOCKS ─── */
+    code {
+      font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', Menlo, monospace;
+      font-size: 13.5px;
+      background: var(--bg-code);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-code);
+    }
+
+    pre {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    pre:hover .copy-btn { opacity: 1; }
+    .copy-btn:hover { color: var(--text); border-color: var(--text-tertiary); }
+    .copy-btn.copied { color: var(--phase-impl); border-color: var(--phase-impl); }
+
+    /* ─── TABLES ─── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    th {
+      text-align: left;
+      padding: 10px 14px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    td {
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    tr:hover td {
+      background: var(--bg-secondary);
+    }
+
+    /* ─── CALLOUTS ─── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .callout-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    .callout p { margin-bottom: 0; font-size: 14px; }
+    .callout p + p { margin-top: 8px; }
+
+    .callout-info {
+      background: var(--bg-callout);
+      border-left: 3px solid var(--accent);
+    }
+
+    .callout-warn {
+      background: var(--bg-callout-warn);
+      border-left: 3px solid #f59e0b;
+    }
+
+    .callout-success {
+      background: var(--bg-callout-success);
+      border-left: 3px solid var(--phase-impl);
+    }
+
+    /* ─── BLOCKQUOTES (example walkthroughs) ─── */
+    blockquote {
+      background: var(--bg-secondary);
+      border-left: 3px solid var(--border);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    blockquote strong { color: var(--text); }
+    blockquote p { font-size: 14px; }
+
+    /* ─── STEP CARDS ─── */
+    .step {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      background: white;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .step:hover {
+      box-shadow: var(--shadow);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .step-num.doc { background: var(--phase-doc); }
+    .step-num.plan { background: var(--phase-plan); }
+    .step-num.impl { background: var(--phase-impl); }
+
+    .step-title {
+      font-size: 17px;
+      font-weight: 650;
+      color: var(--text);
+    }
+
+    /* ─── PROMPT CARDS ─── */
+    .prompt-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .prompt-card-header {
+      background: var(--bg-secondary);
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .prompt-card-title {
+      font-size: 14px;
+      font-weight: 650;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prompt-card-when {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      background: var(--bg-tertiary);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+
+    .prompt-card pre {
+      margin: 0;
+      border: none;
+      border-radius: 0;
+      background: white;
+    }
+
+    /* ─── WORKFLOW DIAGRAM ─── */
+    .workflow {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+      font-family: 'SF Mono', 'Fira Code', Menlo, monospace;
+      font-size: 13px;
+      line-height: 1.85;
+      color: var(--text);
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    .workflow .wf-phase {
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    .workflow .wf-phase.doc { color: var(--phase-doc); }
+    .workflow .wf-phase.plan { color: var(--phase-plan); }
+    .workflow .wf-phase.impl { color: var(--phase-impl); }
+    .workflow .wf-step { color: var(--text-secondary); }
+    .workflow .wf-skill { color: var(--accent); font-weight: 600; }
+    .workflow .wf-arrow { color: var(--text-tertiary); }
+    .workflow .wf-note { color: var(--text-tertiary); font-style: italic; font-weight: 400; }
+
+    /* ─── SKILL PILLS ─── */
+    .skill {
+      display: inline-flex;
+      align-items: center;
+      background: var(--accent-bg);
+      color: var(--accent);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-family: 'SF Mono', Menlo, monospace;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* ─── PROGRESS TRACKER ─── */
+    .tracker {
+      display: flex;
+      gap: 2px;
+      margin: 32px 0;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      overflow: hidden;
+      height: 6px;
+    }
+
+    .tracker-seg {
+      flex: 1;
+      border-radius: 0;
+    }
+
+    .tracker-seg.doc { background: var(--phase-doc); }
+    .tracker-seg.plan { background: var(--phase-plan); }
+    .tracker-seg.impl { background: var(--phase-impl); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 48px;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer a { color: var(--text-secondary); }
+
+    /* ─── BACK TO TOP ─── */
+    .back-to-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s ease;
+      font-size: 16px;
+      color: var(--text-secondary);
+      z-index: 50;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .back-to-top:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); box-shadow: 4px 0 24px rgba(0,0,0,0.1); }
+      .sidebar-toggle { display: flex; }
+      .main { margin-left: 0; }
+      .hero { padding: 40px 24px 36px; }
+      .hero h1 { font-size: 30px; }
+      .content { padding: 32px 24px 60px; }
+      footer { padding: 24px; flex-direction: column; gap: 8px; }
+      .back-to-top { bottom: 76px; }
+    }
+
+    @media (max-width: 640px) {
+      .hero-phases { flex-direction: column; }
+      .hero-phase { width: 100%; }
+    }
+
+    /* ─── PRINT ─── */
+    @media print {
+      .sidebar, .sidebar-toggle, .back-to-top, .copy-btn { display: none !important; }
+      .main { margin-left: 0; }
+      .hero { padding: 24px 0; }
+      .content { padding: 0; }
+      .step { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <h2>Squire Mobile</h2>
+        <span>Spec-Driven Development</span>
+      </div>
+      <nav>
+        <div class="nav-group">
+          <div class="nav-group-title">Overview</div>
+          <a href="#overview"><span class="nav-icon">&#9673;</span> Why Spec-Driven</a>
+          <a href="#quick-reference"><span class="nav-icon">&#10003;</span> Quick Reference</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Phase 1 &mdash; Documentation</div>
+          <a href="#step-1"><span class="nav-icon">1</span> Feature Discovery</a>
+          <a href="#step-2"><span class="nav-icon">2</span> Create Jira Tickets</a>
+          <a href="#step-3"><span class="nav-icon">3</span> Document Existing Apps</a>
+          <a href="#step-4"><span class="nav-icon">4</span> Design Coverage Matrix</a>
+          <a href="#step-5"><span class="nav-icon">5</span> Write Final Specs</a>
+          <a href="#step-6"><span class="nav-icon">6</span> Validate Specs</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Phase 2 &mdash; Planning</div>
+          <a href="#step-7"><span class="nav-icon">7</span> Implementation Plan</a>
+          <a href="#step-8"><span class="nav-icon">8</span> Validate &amp; Adjust</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Phase 3 &mdash; Implementation</div>
+          <a href="#context-mgmt"><span class="nav-icon">&#8644;</span> Context Management</a>
+          <a href="#step-9"><span class="nav-icon">9</span> Implement by Phase</a>
+          <a href="#gotchas"><span class="nav-icon">!</span> Gotchas &amp; Lessons</a>
+          <a href="#bug-tracking"><span class="nav-icon">&#128027;</span> Bug Tracking</a>
+          <a href="#updating-docs"><span class="nav-icon">&#9998;</span> Updating Documents</a>
+          <a href="#step-10"><span class="nav-icon">10</span> Upload to Jira</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Reference</div>
+          <a href="#prompts"><span class="nav-icon">&#10095;</span> Standard Prompts</a>
+          <a href="#skills"><span class="nav-icon">&#9881;</span> Skills Reference</a>
+          <a href="#file-structure"><span class="nav-icon">&#128193;</span> File Structure</a>
+        </div>
+      </nav>
+    </aside>
+
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">&#9776;</button>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- HERO -->
+      <header class="hero">
+        <div class="hero-inner">
+          <div class="hero-badge">&#128736;&#65039; Team Framework v1.0</div>
+          <h1>Spec-Driven Development</h1>
+          <p>A structured process for migrating features from Web Commander and iOS Commander into Mobile Commander. Think thoroughly first, build confidently after.</p>
+          <div class="hero-phases">
+            <div class="hero-phase">
+              <div class="phase-num">1</div>
+              <div>
+                <div class="phase-label">Documentation</div>
+                <div class="phase-desc">Understand what exists</div>
+              </div>
+            </div>
+            <div class="hero-phase">
+              <div class="phase-num">2</div>
+              <div>
+                <div class="phase-label">Planning</div>
+                <div class="phase-desc">Create the roadmap</div>
+              </div>
+            </div>
+            <div class="hero-phase">
+              <div class="phase-num">3</div>
+              <div>
+                <div class="phase-label">Implementation</div>
+                <div class="phase-desc">Build &amp; iterate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+
+        <!-- ═══ OVERVIEW ═══ -->
+        <section class="section" id="overview">
+          <h2 class="section-anchor">Overview</h2>
+          <p>We are consolidating two apps (React web + native iOS) into a single Expo codebase sharing the same backend (squire-api). Every feature goes through three phases: <strong>Documentation</strong>, <strong>Planning</strong>, and <strong>Implementation</strong>.</p>
+
+          <div class="callout callout-warn">
+            <span class="callout-icon">&#9200;</span>
+            <div>
+              <p><strong>Time investment:</strong> Expect the documentation + planning phases to take a full day or more for medium-to-large features. This is intentional &mdash; spending time thinking early prevents costly rework later.</p>
+            </div>
+          </div>
+
+          <div class="tracker">
+            <div class="tracker-seg doc" style="flex:6"></div>
+            <div class="tracker-seg plan" style="flex:2"></div>
+            <div class="tracker-seg impl" style="flex:4"></div>
+          </div>
+        </section>
+
+        <!-- ═══ QUICK REFERENCE ═══ -->
+        <section class="section" id="quick-reference">
+          <h2 class="section-anchor">Quick Reference: Complete Workflow</h2>
+          <div class="workflow"><span class="wf-phase doc">DOCUMENTATION</span>
+ <span class="wf-step"> 1.</span> Analyze feature <span class="wf-arrow">&rarr;</span> identify sub-flows <span class="wf-arrow">&rarr;</span> list tickets
+ <span class="wf-step"> 2.</span> Create empty Jira tickets in Epic
+ <span class="wf-step"> 3.</span> Validate ticket list against Figma designs
+ <span class="wf-step"> 4.</span> <span class="wf-skill">/feature-spec</span> &lt;feature&gt; &lt;sub-flows&gt;          <span class="wf-note">&rarr; generates _spec.md + _jira.md</span>
+ <span class="wf-step"> 5.</span> Review technical specs, request changes
+ <span class="wf-step"> 6.</span> Design coverage matrix                        <span class="wf-note">&rarr; map every screen/state to Figma frames</span>
+ <span class="wf-step"> 7.</span> Write final specs using interview prompt       <span class="wf-note">&rarr; refine _spec.md + _jira.md</span>
+ <span class="wf-step"> 8.</span> <span class="wf-skill">/validate-spec</span> &lt;feature&gt;                      <span class="wf-note">&rarr; cross-check everything</span>
+
+<span class="wf-phase plan">PLANNING</span>
+ <span class="wf-step"> 9.</span> <span class="wf-skill">/implementation-plan</span> &lt;feature&gt;                <span class="wf-note">&rarr; phased plan with Phase 0</span>
+<span class="wf-step">10.</span> Review &amp; adjust plan
+
+<span class="wf-phase impl">IMPLEMENTATION</span>
+<span class="wf-step">11.</span> For each phase:
+    a. New conversation <span class="wf-arrow">&rarr;</span> "Read plan, implement Phase N"
+    b. Iterate (play, find bugs, fix)
+    c. Update plan, specs, and jira docs
+    d. <span class="wf-skill">/review-pr</span> <span class="wf-arrow">&rarr;</span> <span class="wf-skill">/create-pr</span>
+<span class="wf-step">12.</span> <span class="wf-skill">/upload-jira</span> &lt;feature&gt; &lt;ticket mappings&gt;      <span class="wf-note">&rarr; push final docs to Jira</span></div>
+        </section>
+
+        <!-- ═══ PHASE 1: DOCUMENTATION ═══ -->
+        <section class="section" id="phase-1-doc">
+          <h2 class="section-anchor">Phase 1: Documentation <span class="phase-tag doc">Documentation</span></h2>
+
+          <!-- Step 1 -->
+          <div class="step" id="step-1">
+            <div class="step-header">
+              <div class="step-num doc">1</div>
+              <div class="step-title">Feature Discovery &amp; Ticket Decomposition</div>
+            </div>
+            <p>Before writing any specs, analyze the entire feature to identify sub-flows that deserve their own Jira ticket.</p>
+            <h4>How to decompose:</h4>
+            <ul>
+              <li>Look at the feature in Web Commander and the new Figma designs</li>
+              <li>Identify distinct screens, flows, and user interactions</li>
+              <li><strong>Ticket sizing rule:</strong> 1 ticket = 1 screen or 1 user-facing flow that can be demo'd independently. If a flow has 2+ distinct UI modes (e.g., create vs edit category), it's still one ticket if they share 80%+ of the UI. If they diverge significantly, split them.</li>
+              <li>Consider what a reviewer can reasonably review in one PR</li>
+            </ul>
+            <h4>Example (Service Management):</h4>
+            <ul>
+              <li>Service List (view, filter, category grouping)</li>
+              <li>Delete Service (swipe mobile, hover web, confirmation)</li>
+              <li>Manage Categories (create, edit, delete)</li>
+              <li>Manage Service Order (drag-and-drop reorder)</li>
+              <li>Reset Service Order (API call + confirmation)</li>
+              <li>Export CSV (web-only download)</li>
+            </ul>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step" id="step-2">
+            <div class="step-header">
+              <div class="step-num doc">2</div>
+              <div class="step-title">Create Empty Jira Tickets</div>
+            </div>
+            <ol>
+              <li>Create empty tickets inside the corresponding Epic</li>
+              <li>Validate against the Figma designs that these are the only tickets needed</li>
+              <li><strong>Important:</strong> If a flow deserves more detail (e.g., "filters" within "service list"), that's a separate ticket. Keep tickets focused.</li>
+            </ol>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step" id="step-3">
+            <div class="step-header">
+              <div class="step-num doc">3</div>
+              <div class="step-title">Document Existing Apps</div>
+            </div>
+            <p>Use <span class="skill">/feature-spec</span> to reverse-engineer each sub-flow from the existing apps:</p>
+            <pre><code>/feature-spec ServiceManagement service_list, delete_service, manage_categories, manage_order, reset_order, export_csv</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+            <p>This produces two documents per feature:</p>
+            <ul>
+              <li><code>_spec.md</code> &mdash; Technical spec for engineers</li>
+              <li><code>_jira.md</code> &mdash; Functional docs for QA/PM</li>
+            </ul>
+            <div class="callout callout-info">
+              <span class="callout-icon">&#128161;</span>
+              <div><p><strong>Tip:</strong> Ask Claude to launch sub-agents for parallel documentation when documenting multiple sub-flows. This significantly speeds up the process.</p></div>
+            </div>
+            <p>After all docs are created, review the <strong>technical spec</strong> (it's the most detailed) and request changes to both documents if needed.</p>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="step" id="step-4">
+            <div class="step-header">
+              <div class="step-num doc">4</div>
+              <div class="step-title">Design Coverage Matrix</div>
+            </div>
+            <p>Before writing final specs, walk through each flow and map every screen/state to a specific Figma frame. The goal is to have a visual reference for every UI state the engineer will need to build.</p>
+            <p><strong>How to do it:</strong> Go through each flow as if you were a user, and for every screen or interaction, link the corresponding Figma design. Be specific &mdash; don't just link "the service list," link each platform variant and each interaction state.</p>
+
+            <h4>Example (Service Management):</h4>
+            <blockquote>
+              <p><strong>Service List flow:</strong></p>
+              <ul>
+                <li>On web, the list looks like this: <a href="#">Figma &mdash; Web Service List</a></li>
+                <li>On mobile, it looks like this: <a href="#">Figma &mdash; Mobile Service List</a></li>
+                <li>Each category section has a three-dot menu. On web it's a dropdown: <a href="#">Figma &mdash; Category Dropdown</a></li>
+                <li>On mobile, the three-dot opens a bottom sheet: <a href="#">Figma &mdash; Category Bottom Sheet</a></li>
+              </ul>
+              <p><strong>Delete Service flow:</strong></p>
+              <ul>
+                <li>On mobile, you swipe left to reveal a red delete button: <a href="#">Figma &mdash; Swipe Delete</a></li>
+                <li>On web, hovering a row shows a trash icon replacing the right columns: <a href="#">Figma &mdash; Hover Delete</a></li>
+                <li>Tapping delete shows a confirmation dialog: <a href="#">Figma &mdash; Delete Confirmation</a></li>
+              </ul>
+              <p><strong>Manage Categories flow:</strong></p>
+              <ul>
+                <li>No Figma design exists for the category form &rarr; use <span class="skill">/generate-ui</span></li>
+              </ul>
+            </blockquote>
+
+            <p>Build a summary table from this walkthrough:</p>
+            <table>
+              <thead>
+                <tr><th>Flow</th><th>Figma Frame</th><th>Status</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Service List (mobile)</td><td>node 13919:5723</td><td>Covered</td></tr>
+                <tr><td>Service List (web)</td><td>node 13929:35313</td><td>Covered</td></tr>
+                <tr><td>Category dropdown (web)</td><td>node 13929:35751</td><td>Covered</td></tr>
+                <tr><td>Category bottom sheet (mobile)</td><td>node 13929:32886</td><td>Covered</td></tr>
+                <tr><td>Hover delete (web)</td><td>node 14009:47989</td><td>Covered</td></tr>
+                <tr><td>Category Form</td><td>&mdash;</td><td>No design (use <code>/generate-ui</code>)</td></tr>
+                <tr><td>Export CSV</td><td>&mdash;</td><td>Web-only, no mobile design needed</td></tr>
+              </tbody>
+            </table>
+            <p><strong>Flag gaps:</strong> Flows without designs need either a Figma request or <span class="skill">/generate-ui</span>. Designs without documented flows might indicate undiscovered requirements.</p>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="step" id="step-5">
+            <div class="step-header">
+              <div class="step-num doc">5</div>
+              <div class="step-title">Write Final Specs (Interview-Driven)</div>
+            </div>
+            <p>Take each ticket and merge the existing app documentation with the new Figma designs. Explain the flow, functional requirements, and attach Figma links. Then use the <a href="#prompt-interview">Interview Prompt</a>.</p>
+            <p>Claude will ask detailed questions that shape the final spec. Many answers will be "Check squire-app and match its behavior" &mdash; that's fine, it ensures alignment.</p>
+            <p><strong>After the interview:</strong> Read the final spec and verify it makes sense. Repeat for all remaining tickets.</p>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="step" id="step-6">
+            <div class="step-header">
+              <div class="step-num doc">6</div>
+              <div class="step-title">Validate Specs</div>
+            </div>
+            <p>Before moving to planning, run <span class="skill">/validate-spec</span> on all specs:</p>
+            <pre><code>/validate-spec services</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+            <p>This cross-checks:</p>
+            <ul>
+              <li>All Figma links are valid and accessible</li>
+              <li>All API endpoints exist in <code>@squire/api</code> or <code>src/api/</code></li>
+              <li>All three user types (Brand, Shop, Barber) are covered in every ticket</li>
+              <li>Permissions match squire-app exactly (prompts you for any differences)</li>
+              <li>Jira documents have all required sections for <span class="skill">/upload-jira</span></li>
+            </ul>
+            <div class="callout callout-warn">
+              <span class="callout-icon">&#9888;&#65039;</span>
+              <div><p><strong>Fix everything flagged before proceeding.</strong> This prevents mid-implementation surprises.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══ PHASE 2: PLANNING ═══ -->
+        <section class="section" id="phase-2-plan">
+          <h2 class="section-anchor">Phase 2: Planning <span class="phase-tag plan">Planning</span></h2>
+
+          <!-- Step 7 -->
+          <div class="step" id="step-7">
+            <div class="step-header">
+              <div class="step-num plan">7</div>
+              <div class="step-title">Generate Implementation Plan</div>
+            </div>
+            <p>Use <span class="skill">/implementation-plan</span> to analyze all specs and create a phased roadmap:</p>
+            <pre><code>/implementation-plan services</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+            <p>This produces an <code>implementation_plan.md</code> with:</p>
+            <ul>
+              <li><strong>Phase 0: Shared Infrastructure</strong> (mandatory) &mdash; shared components, hooks, utilities, API methods, routes</li>
+              <li><strong>Subsequent phases</strong> ordered by dependencies (list screens before forms, read before write)</li>
+              <li><strong>Key architecture decisions</strong> pre-documented</li>
+              <li><strong>Empty sections</strong> for gotchas and bug fixes (populated during implementation)</li>
+              <li><strong>Cleanup phase</strong> at the end (mandatory)</li>
+            </ul>
+          </div>
+
+          <!-- Step 8 -->
+          <div class="step" id="step-8">
+            <div class="step-header">
+              <div class="step-num plan">8</div>
+              <div class="step-title">Validate &amp; Adjust the Plan</div>
+            </div>
+            <p>Review the generated plan:</p>
+            <ul>
+              <li>Does the phase ordering make sense?</li>
+              <li>Are the PR sizes reasonable for review?</li>
+              <li>Are there any cross-feature dependencies the plan missed?</li>
+              <li>Do the architecture decisions align with how you want to build it?</li>
+            </ul>
+            <div class="callout callout-warn">
+              <span class="callout-icon">&#9889;</span>
+              <div><p>This is the <strong>last chance to change course cheaply</strong>. Make adjustments now.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ═══ PHASE 3: IMPLEMENTATION ═══ -->
+        <section class="section" id="phase-3-impl">
+          <h2 class="section-anchor">Phase 3: Implementation <span class="phase-tag impl">Implementation</span></h2>
+
+          <!-- Context Management -->
+          <div class="step" id="context-mgmt">
+            <div class="step-header">
+              <div class="step-num impl">&#8644;</div>
+              <div class="step-title">Context Window Management</div>
+            </div>
+            <p>Claude's context window (200k tokens) fills fast when reading specs + codebase. Use these rules:</p>
+            <table>
+              <thead><tr><th>Task</th><th>Conversation Strategy</th></tr></thead>
+              <tbody>
+                <tr><td>All documentation (Steps 1&ndash;6)</td><td>1 conversation</td></tr>
+                <tr><td>Planning (Steps 7&ndash;8)</td><td>Same or new conversation</td></tr>
+                <tr><td>Implementation (per phase)</td><td><strong>New conversation per 1&ndash;3 phases</strong></td></tr>
+                <tr><td>Bug fixing / iteration</td><td>Same conversation as the phase</td></tr>
+              </tbody>
+            </table>
+            <p><strong>After each conversation:</strong> Update the implementation plan with decisions and status before closing.</p>
+          </div>
+
+          <!-- Step 9 -->
+          <div class="step" id="step-9">
+            <div class="step-header">
+              <div class="step-num impl">9</div>
+              <div class="step-title">Implement Phase by Phase</div>
+            </div>
+            <p>For each phase:</p>
+            <ol>
+              <li><strong>Read &amp; ask</strong> &mdash; Claude reads the plan + relevant specs. If it has questions, answer them. If not, it starts implementing.</li>
+              <li><strong>First pass</strong> &mdash; Claude implements the phase. Use sub-agents for independent work (e.g., multiple components in Phase 0).</li>
+              <li><strong>Iterate</strong> &mdash; Play with the feature. Make a list of bugs, design mistakes, and issues. Share them with Claude using the <a href="#prompt-iteration">Iteration Prompt</a>.</li>
+              <li><strong>Document</strong> &mdash; After the phase is stable:
+                <ul>
+                  <li>Update the implementation plan status</li>
+                  <li>Add gotchas to the "Gotchas &amp; Lessons Learned" section</li>
+                  <li>Add bugs to the "Bug Fixes Applied" section</li>
+                  <li>Update specs and jira docs if any decisions changed</li>
+                </ul>
+              </li>
+              <li><strong>PR</strong> &mdash; Use <span class="skill">/review-pr</span> then <span class="skill">/create-pr</span></li>
+            </ol>
+          </div>
+
+          <!-- Gotchas -->
+          <div class="step" id="gotchas">
+            <div class="step-header">
+              <div class="step-num impl">!</div>
+              <div class="step-title">Gotchas &amp; Lessons Learned</div>
+            </div>
+            <p>After every implementation phase, document gotchas in the implementation plan. These are <strong>institutional knowledge</strong> for the team.</p>
+            <h4>Examples from Service Management:</h4>
+            <ul>
+              <li>Unistyles <code>StyleSheet.create()</code> styles don't work when passed as ReactNode props across component boundaries &rarr; use inline styles with <code>theme</code> tokens</li>
+              <li>SectionList doesn't reliably re-render items when <code>extraData</code> changes &rarr; use ref-based imperative approach for swipe dismiss</li>
+              <li>Web dropdown menus must use <code>createPortal</code> to escape parent stacking contexts</li>
+              <li><code>Platform.OS</code> checks don't work for responsive layouts &rarr; use <code>useResponsiveDevice().isDesktop</code></li>
+            </ul>
+            <div class="callout callout-success">
+              <span class="callout-icon">&#128218;</span>
+              <div><p>These gotchas save future developers <strong>hours</strong> of debugging the same issues.</p></div>
+            </div>
+          </div>
+
+          <!-- Bug Tracking -->
+          <div class="step" id="bug-tracking">
+            <div class="step-header">
+              <div class="step-num impl">&#128027;</div>
+              <div class="step-title">Bug Tracking During Iteration</div>
+            </div>
+            <p>When you "play with the feature and find bugs," track them in the implementation plan:</p>
+            <table>
+              <thead><tr><th>#</th><th>Bug</th><th>Phase</th><th>Resolution</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Include parameter missing in service fetch</td><td>1</td><td>Added <code>filters: { include: '...' }</code> to query</td></tr>
+                <tr><td>2</td><td>ThreeDotsIcon showing vertical instead of horizontal</td><td>1</td><td>Swapped icon orientation prop</td></tr>
+                <tr><td>3</td><td>Duration format showing "0 hr 30 min" instead of "30 min"</td><td>1</td><td>Skip zero components in format function</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Updating Docs -->
+          <div class="step" id="updating-docs">
+            <div class="step-header">
+              <div class="step-num impl">&#9998;</div>
+              <div class="step-title">Updating Documents</div>
+            </div>
+            <div class="callout callout-warn">
+              <span class="callout-icon">&#128680;</span>
+              <div>
+                <p><strong>Every implementation PR must include updates to:</strong></p>
+                <p>1. Implementation plan &mdash; phase status, new decisions, gotchas, bug fixes<br>
+                   2. Spec documents &mdash; if any behavior changed from the original spec<br>
+                   3. Jira documents &mdash; if acceptance criteria or behavior changed</p>
+                <p>This is not optional. Stale docs are worse than no docs.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 10 -->
+          <div class="step" id="step-10">
+            <div class="step-header">
+              <div class="step-num impl">10</div>
+              <div class="step-title">Upload to Jira</div>
+            </div>
+            <p>After <strong>all implementation phases are complete</strong> and specs are finalized, upload the documentation to Jira:</p>
+            <pre><code>/upload-jira services SQR-3188 service list, SQR-3189 delete service, SQR-3190 manage categories</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+            <p>This pushes the <code>_jira.md</code> content into each Jira ticket &mdash; descriptions, acceptance criteria, testing notes, and all custom fields. Do this <strong>after</strong> implementation is done so the Jira tickets reflect the final, tested behavior.</p>
+          </div>
+        </section>
+
+        <!-- ═══ STANDARD PROMPTS ═══ -->
+        <section class="section" id="prompts">
+          <h2 class="section-anchor">Standard Prompts</h2>
+          <p>Copy-paste these prompts at the right moment in the workflow.</p>
+
+          <div class="prompt-card" id="prompt-interview">
+            <div class="prompt-card-header">
+              <span class="prompt-card-title">&#128172; Interview Prompt</span>
+              <span class="prompt-card-when">Step 5</span>
+            </div>
+            <pre><code>Read this SPEC and interview me in detail using the AskUserQuestionTool about literally
+anything: technical implementation, UI & UX, concerns, tradeoffs, roles, permissions,
+flow decisions, etc. but make sure the questions are not obvious.
+
+Be very in-depth and continue interviewing me continually until it's complete, then
+write both the Jira and the Spec to those files.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+          </div>
+
+          <div class="prompt-card">
+            <div class="prompt-card-header">
+              <span class="prompt-card-title">&#128640; Implementation Kickoff</span>
+              <span class="prompt-card-when">Step 9</span>
+            </div>
+            <pre><code>Read docs/&lt;FEATURE&gt;/implementation_plan.md and implement Phase &lt;N&gt;.
+After reading, ask me any questions before starting.
+Use sub-agents for parallelizable work.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+          </div>
+
+          <div class="prompt-card" id="prompt-iteration">
+            <div class="prompt-card-header">
+              <span class="prompt-card-title">&#128270; Iteration Prompt</span>
+              <span class="prompt-card-when">Step 9.3</span>
+            </div>
+            <pre><code>Here are the issues I found while testing:
+1. &lt;issue&gt;
+2. &lt;issue&gt;
+3. &lt;issue&gt;
+
+Fix them, then update all documentation:
+- Implementation plan: gotchas and bug fixes sections
+- Spec documents: if any behavior changed
+- Jira documents: if acceptance criteria or behavior changed</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+          </div>
+
+          <div class="prompt-card">
+            <div class="prompt-card-header">
+              <span class="prompt-card-title">&#127937; Phase Completion</span>
+              <span class="prompt-card-when">Step 9.4</span>
+            </div>
+            <pre><code>Phase &lt;N&gt; is complete. Please:
+1. Update the implementation plan — mark Phase &lt;N&gt; as Complete, add any gotchas
+2. Update specs and jira docs if any behavior changed
+3. Run /review-pr
+4. Run /create-pr</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+          </div>
+        </section>
+
+        <!-- ═══ SKILLS REFERENCE ═══ -->
+        <section class="section" id="skills">
+          <h2 class="section-anchor">Skills Reference</h2>
+
+          <h3>Documentation Phase</h3>
+          <table>
+            <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><span class="skill">/feature-spec</span></td><td>Starting a new feature</td><td>Reverse-engineers Web/iOS into <code>_spec.md</code> + <code>_jira.md</code></td></tr>
+              <tr><td><span class="skill">/validate-spec</span></td><td>After all specs are written</td><td>Cross-checks Figma links, API availability, permissions, user types</td></tr>
+              <tr><td><span class="skill">/analyze-designs</span></td><td>When Figma designs exist</td><td>Extracts reusable design patterns into <code>design-patterns.md</code></td></tr>
+            </tbody>
+          </table>
+
+          <h3>Planning Phase</h3>
+          <table>
+            <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><span class="skill">/implementation-plan</span></td><td>After specs are validated</td><td>Creates phased plan with Phase 0 (shared infra), dependencies, architecture decisions</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Implementation Phase</h3>
+          <table>
+            <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><span class="skill">/create-component</span></td><td>Building a new component</td><td>Scaffolds 4-file structure</td></tr>
+              <tr><td><span class="skill">/create-screen</span></td><td>Building a new screen</td><td>Scaffolds screen structure</td></tr>
+              <tr><td><span class="skill">/create-query</span></td><td>Adding data fetching</td><td>Creates React Query hook with key factory</td></tr>
+              <tr><td><span class="skill">/create-mutation</span></td><td>Adding data mutations</td><td>Creates mutation hook with cache invalidation</td></tr>
+              <tr><td><span class="skill">/create-enum</span></td><td>Adding a TypeScript enum</td><td>Creates enum following conventions</td></tr>
+              <tr><td><span class="skill">/figma-to-code</span></td><td>Converting Figma to code</td><td>Pixel-perfect React Native from Figma</td></tr>
+              <tr><td><span class="skill">/generate-ui</span></td><td>No designs available</td><td>Generates UI from design patterns</td></tr>
+              <tr><td><span class="skill">/preview-ui</span></td><td>Designer review needed</td><td>Creates HTML/CSS previews</td></tr>
+              <tr><td><span class="skill">/sort-locales</span></td><td>After locale changes</td><td>Sorts translation keys alphabetically</td></tr>
+            </tbody>
+          </table>
+
+          <h3>Review &amp; Ship Phase</h3>
+          <table>
+            <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><span class="skill">/review-pr</span></td><td>Before creating PR</td><td>Code review against project standards</td></tr>
+              <tr><td><span class="skill">/fix-pr</span></td><td>After human review</td><td>Applies PR review feedback</td></tr>
+              <tr><td><span class="skill">/create-pr</span></td><td>Ready to submit</td><td>Creates PR with structured description</td></tr>
+              <tr><td><span class="skill">/upload-jira</span></td><td>After all implementation is done</td><td>Pushes final <code>_jira.md</code> content to Jira tickets</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ═══ FILE STRUCTURE ═══ -->
+        <section class="section" id="file-structure">
+          <h2 class="section-anchor">File Structure</h2>
+          <p>All feature documentation lives under <code>docs/&lt;feature_name&gt;/</code>:</p>
+          <pre><code>docs/
+└── services/
+    ├── service_list_spec.md              # Technical spec
+    ├── service_list_jira.md              # Jira/QA doc
+    ├── delete_service_spec.md
+    ├── delete_service_jira.md
+    ├── manage_categories_spec.md
+    ├── manage_categories_jira.md
+    ├── ...
+    └── service_management_implementation_plan.md  # Living implementation plan</code></pre>
+        </section>
+
+      </div>
+
+      <!-- FOOTER -->
+      <footer>
+        <span>Squire Mobile Commander &mdash; Spec-Driven Development Framework v1.0</span>
+        <span>Source: <a href="#">SPEC_DRIVEN_DEVELOPMENT.md</a></span>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Back to top -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top">&uarr;</button>
+
+  <script>
+    // ─── Copy button ───
+    function copyCode(btn) {
+      const code = btn.previousElementSibling || btn.parentElement.querySelector('code');
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+      });
+    }
+
+    // ─── Sidebar active state ───
+    const sections = document.querySelectorAll('[id]');
+    const navLinks = document.querySelectorAll('.sidebar a[href^="#"]');
+
+    function updateActiveNav() {
+      let current = '';
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 80) current = section.id;
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
+
+    // ─── Back to top ───
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      backToTop.classList.toggle('visible', window.scrollY > 400);
+    }, { passive: true });
+    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ─── Mobile sidebar toggle ───
+    const sidebar = document.getElementById('sidebar');
+    const toggle = document.getElementById('sidebarToggle');
+    toggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      toggle.textContent = sidebar.classList.contains('open') ? '✕' : '☰';
+    });
+
+    // Close sidebar on link click (mobile)
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) {
+          sidebar.classList.remove('open');
+          toggle.textContent = '☰';
+        }
+      });
+    });
+
+    // ─── Smooth scroll for nav links ───
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+</body>
+</html>

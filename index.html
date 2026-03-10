@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spec-Driven Development — Squire Mobile Commander</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📋</text></svg>">
   <style>
     :root {
       --bg: #ffffff;
@@ -699,8 +700,14 @@
       </div>
       <nav>
         <div class="nav-group">
-          <div class="nav-group-title">Overview</div>
-          <a href="#overview"><span class="nav-icon">&#9673;</span> Why Spec-Driven</a>
+          <div class="nav-group-title">Introduction</div>
+          <a href="#what-is-sdd"><span class="nav-icon">&#9670;</span> What is SDD?</a>
+          <a href="#specs-vs-prompts"><span class="nav-icon">&#8646;</span> Specs vs. Prompts</a>
+          <a href="#when-to-use"><span class="nav-icon">&#10004;</span> When to Use SDD</a>
+        </div>
+        <div class="nav-group">
+          <div class="nav-group-title">Our Workflow</div>
+          <a href="#overview"><span class="nav-icon">&#9673;</span> Overview</a>
           <a href="#quick-reference"><span class="nav-icon">&#10003;</span> Quick Reference</a>
         </div>
         <div class="nav-group">
@@ -744,7 +751,7 @@
         <div class="hero-inner">
           <div class="hero-badge">&#128736;&#65039; Team Framework v1.0</div>
           <h1>Spec-Driven Development</h1>
-          <p>A structured process for migrating features from Web Commander and iOS Commander into Mobile Commander. Think thoroughly first, build confidently after.</p>
+          <p>A methodology for building complex features with AI assistance. Specifications are durable; prompts are ephemeral. Think thoroughly first, build confidently after.</p>
           <div class="hero-phases">
             <div class="hero-phase">
               <div class="phase-num">1</div>
@@ -773,9 +780,83 @@
 
       <div class="content">
 
+        <!-- ═══ WHAT IS SDD ═══ -->
+        <section class="section" id="what-is-sdd">
+          <h2 class="section-anchor">What is Spec-Driven Development?</h2>
+          <p>Spec-Driven Development (SDD) is a methodology that treats <strong>specifications as executable blueprints</strong> that continuously guide AI-assisted implementation. Instead of feeding natural-language prompts into an AI and hoping for the best, SDD creates durable, version-controlled artifacts that serve as the single source of truth throughout the entire development lifecycle.</p>
+
+          <div class="callout callout-info">
+            <span class="callout-icon">&#128161;</span>
+            <div>
+              <p><strong>The core insight:</strong> Prompts are ephemeral &mdash; they lose context between sessions, vary by developer, and leave no trace. Specifications are durable &mdash; they persist across sessions, enforce consistency, and compound knowledge over time.</p>
+            </div>
+          </div>
+
+          <h3>The Problem</h3>
+          <p>When teams use AI to generate code from ad-hoc prompts, several problems emerge:</p>
+          <ul>
+            <li><strong>Architectural drift</strong> &mdash; Different developers prompt differently, producing inconsistent patterns across the same codebase</li>
+            <li><strong>Context loss</strong> &mdash; Each new AI session starts from zero. Decisions made yesterday are forgotten today</li>
+            <li><strong>No traceability</strong> &mdash; There's no artifact connecting a requirement to its implementation. When something breaks, there's no spec to trace back to</li>
+            <li><strong>Compounding rework</strong> &mdash; Without upfront thinking, teams discover gaps mid-implementation, leading to costly rewrites</li>
+          </ul>
+
+          <h3>The Solution</h3>
+          <p>SDD inverts the workflow. Instead of <em>prompt &rarr; code &rarr; hope</em>, you follow <em>spec &rarr; plan &rarr; implement &rarr; update spec</em>. The specification becomes a living document that:</p>
+          <ul>
+            <li><strong>Guides every AI session</strong> &mdash; New conversations read the spec, not a fresh prompt</li>
+            <li><strong>Captures decisions</strong> &mdash; Architecture choices, gotchas, and trade-offs are recorded permanently</li>
+            <li><strong>Enables parallelism</strong> &mdash; Multiple developers (or AI agents) can work from the same spec without diverging</li>
+            <li><strong>Stays current</strong> &mdash; Specs are updated during implementation, so they always reflect reality</li>
+          </ul>
+        </section>
+
+        <!-- ═══ SPECS VS PROMPTS ═══ -->
+        <section class="section" id="specs-vs-prompts">
+          <h2 class="section-anchor">Specs vs. Prompts</h2>
+          <table>
+            <thead>
+              <tr><th></th><th>Ad-hoc Prompts</th><th>Spec-Driven Development</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Lifespan</strong></td><td>Dies when the session ends</td><td>Lives in version control forever</td></tr>
+              <tr><td><strong>Consistency</strong></td><td>Varies by developer and mood</td><td>Single source of truth for the team</td></tr>
+              <tr><td><strong>Context</strong></td><td>Resets every conversation</td><td>AI reads the spec &mdash; full context in seconds</td></tr>
+              <tr><td><strong>Knowledge</strong></td><td>Lost after each session</td><td>Gotchas, decisions, and patterns compound</td></tr>
+              <tr><td><strong>Traceability</strong></td><td>No link between requirement and code</td><td>Every implementation traces to a spec</td></tr>
+              <tr><td><strong>Collaboration</strong></td><td>Hard to review what was asked</td><td>Specs are reviewable, diffable, shareable</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ═══ WHEN TO USE SDD ═══ -->
+        <section class="section" id="when-to-use">
+          <h2 class="section-anchor">When to Use SDD</h2>
+          <p>SDD delivers the most value for complex, multi-faceted features. It's not needed for every change.</p>
+          <table>
+            <thead>
+              <tr><th>Use SDD</th><th>Skip SDD</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Feature touches 3+ screens or flows</td><td>Isolated bug fix</td></tr>
+              <tr><td>Multiple user types with different permissions</td><td>Copy change or styling tweak</td></tr>
+              <tr><td>Cross-team handoff needed (QA, PM, design)</td><td>Single-file refactor</td></tr>
+              <tr><td>Feature migrated from another platform</td><td>Adding a field to an existing form</td></tr>
+              <tr><td>Architecture decisions that affect future work</td><td>Dependency update</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-success">
+            <span class="callout-icon">&#9889;</span>
+            <div>
+              <p><strong>Rule of thumb:</strong> If you'd spend more than a day implementing it, spend a few hours speccing it first. The documentation + planning phases pay for themselves by eliminating mid-implementation surprises and producing Jira-ready documentation as a byproduct.</p>
+            </div>
+          </div>
+        </section>
+
         <!-- ═══ OVERVIEW ═══ -->
         <section class="section" id="overview">
-          <h2 class="section-anchor">Overview</h2>
+          <h2 class="section-anchor">Our Workflow</h2>
           <p>We are consolidating two apps (React web + native iOS) into a single Expo codebase sharing the same backend (squire-api). Every feature goes through three phases: <strong>Documentation</strong>, <strong>Planning</strong>, and <strong>Implementation</strong>.</p>
 
           <div class="callout callout-warn">

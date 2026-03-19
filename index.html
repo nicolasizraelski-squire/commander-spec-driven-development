@@ -37,6 +37,37 @@
       --radius-lg: 12px;
     }
 
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0D0D0D;
+        --bg-secondary: #1A1A1A;
+        --bg-tertiary: #262626;
+        --bg-code: #262626;
+        --bg-callout: rgba(0, 127, 255, 0.16);
+        --bg-callout-warn: rgba(242, 127, 13, 0.16);
+        --bg-callout-success: rgba(0, 153, 51, 0.16);
+        --bg-phase-doc: rgba(37, 99, 235, 0.2);
+        --bg-phase-plan: rgba(124, 58, 237, 0.2);
+        --bg-phase-impl: rgba(22, 163, 74, 0.2);
+        --border: #333333;
+        --border-light: #262626;
+        --text: #FFFFFF;
+        --text-secondary: #B3B3B3;
+        --text-tertiary: #666666;
+        --text-code: #F4983B;
+        --accent: #007FFF;
+        --accent-light: #279FFF;
+        --accent-bg: rgba(0, 127, 255, 0.16);
+        --phase-doc: #3b82f6;
+        --phase-plan: #a78bfa;
+        --phase-impl: #31AD5A;
+        --link: #007FFF;
+        --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+        --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);
+      }
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -182,7 +213,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: white;
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 20px;
       padding: 5px 14px;
@@ -220,7 +251,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background: white;
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 12px 18px;
@@ -369,7 +400,7 @@
       position: absolute;
       top: 8px;
       right: 8px;
-      background: white;
+      background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 5px;
       padding: 4px 10px;
@@ -468,7 +499,7 @@
       border-radius: var(--radius-lg);
       padding: 24px 28px;
       margin-bottom: 20px;
-      background: white;
+      background: var(--bg);
       box-shadow: var(--shadow-sm);
       transition: box-shadow 0.2s ease;
     }
@@ -547,7 +578,7 @@
       margin: 0;
       border: none;
       border-radius: 0;
-      background: white;
+      background: var(--bg);
     }
 
     /* ─── WORKFLOW DIAGRAM ─── */
@@ -636,7 +667,7 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      background: white;
+      background: var(--bg);
       border: 1px solid var(--border);
       box-shadow: var(--shadow-md);
       display: flex;
@@ -680,6 +711,19 @@
       .hero-phase { width: 100%; }
     }
 
+    /* ─── DARK MODE OVERRIDES ─── */
+    @media (prefers-color-scheme: dark) {
+      .hero {
+        background: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 50%, #0D0D0D 100%);
+      }
+      .sidebar-toggle {
+        box-shadow: 0 4px 12px rgba(0, 127, 255, 0.3);
+      }
+      .callout-warn {
+        border-left-color: #F4983B;
+      }
+    }
+
     /* ─── PRINT ─── */
     @media print {
       .sidebar, .sidebar-toggle, .back-to-top, .copy-btn { display: none !important; }
@@ -715,23 +759,22 @@
           <a href="#step-1"><span class="nav-icon">1</span> Feature Discovery</a>
           <a href="#step-2"><span class="nav-icon">2</span> Create Jira Tickets</a>
           <a href="#step-3"><span class="nav-icon">3</span> Document Existing Apps</a>
-          <a href="#step-4"><span class="nav-icon">4</span> Design Coverage Matrix</a>
-          <a href="#step-5"><span class="nav-icon">5</span> Write Final Specs</a>
-          <a href="#step-6"><span class="nav-icon">6</span> Validate Specs</a>
+          <a href="#step-4"><span class="nav-icon">4</span> Write Final Specs</a>
+          <a href="#step-5"><span class="nav-icon">5</span> Validate Specs</a>
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Phase 2 &mdash; Planning</div>
-          <a href="#step-7"><span class="nav-icon">7</span> Implementation Plan</a>
-          <a href="#step-8"><span class="nav-icon">8</span> Validate &amp; Adjust</a>
+          <a href="#step-6"><span class="nav-icon">6</span> Implementation Plan</a>
+          <a href="#step-7"><span class="nav-icon">7</span> Validate &amp; Adjust</a>
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Phase 3 &mdash; Implementation</div>
           <a href="#context-mgmt"><span class="nav-icon">&#8644;</span> Context Management</a>
-          <a href="#step-9"><span class="nav-icon">9</span> Implement by Phase</a>
+          <a href="#step-8"><span class="nav-icon">8</span> Implement by Phase</a>
           <a href="#gotchas"><span class="nav-icon">!</span> Gotchas &amp; Lessons</a>
           <a href="#bug-tracking"><span class="nav-icon">&#128027;</span> Bug Tracking</a>
           <a href="#updating-docs"><span class="nav-icon">&#9998;</span> Updating Documents</a>
-          <a href="#step-10"><span class="nav-icon">10</span> Upload to Jira</a>
+          <a href="#step-9"><span class="nav-icon">9</span> Upload to Jira</a>
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Reference</div>
@@ -965,65 +1008,55 @@
           <div class="step" id="step-4">
             <div class="step-header">
               <div class="step-num doc">4</div>
-              <div class="step-title">Design Coverage Matrix</div>
+              <div class="step-title">Write Final Specs (Interview-Driven)</div>
             </div>
-            <p>Before writing final specs, walk through each flow and map every screen/state to a specific Figma frame. The goal is to have a visual reference for every UI state the engineer will need to build.</p>
-            <p><strong>How to do it:</strong> Go through each flow as if you were a user, and for every screen or interaction, link the corresponding Figma design. Be specific &mdash; don't just link "the service list," link each platform variant and each interaction state.</p>
+            <p>For each ticket, you'll prepare a context document, then let Claude interview you to fill in every gap. This is a single prompt &mdash; here's what to include:</p>
 
-            <h4>Example (Service Management):</h4>
-            <blockquote>
-              <p><strong>Service List flow:</strong></p>
-              <ul>
-                <li>On web, the list looks like this: <a href="#">Figma &mdash; Web Service List</a></li>
-                <li>On mobile, it looks like this: <a href="#">Figma &mdash; Mobile Service List</a></li>
-                <li>Each category section has a three-dot menu. On web it's a dropdown: <a href="#">Figma &mdash; Category Dropdown</a></li>
-                <li>On mobile, the three-dot opens a bottom sheet: <a href="#">Figma &mdash; Category Bottom Sheet</a></li>
-              </ul>
-              <p><strong>Delete Service flow:</strong></p>
-              <ul>
-                <li>On mobile, you swipe left to reveal a red delete button: <a href="#">Figma &mdash; Swipe Delete</a></li>
-                <li>On web, hovering a row shows a trash icon replacing the right columns: <a href="#">Figma &mdash; Hover Delete</a></li>
-                <li>Tapping delete shows a confirmation dialog: <a href="#">Figma &mdash; Delete Confirmation</a></li>
-              </ul>
-              <p><strong>Manage Categories flow:</strong></p>
-              <ul>
-                <li>No Figma design exists for the category form &rarr; use <span class="skill">/generate-ui</span></li>
-              </ul>
-            </blockquote>
+            <h4>1. Map designs to flows</h4>
+            <p>Walk through each flow as if you were a user and link the corresponding Figma frame for every screen and interaction state. Be specific &mdash; link each platform variant and each interaction state, not just "the service list."</p>
 
-            <p>Build a summary table from this walkthrough:</p>
-            <table>
-              <thead>
-                <tr><th>Flow</th><th>Figma Frame</th><th>Status</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Service List (mobile)</td><td>node 13919:5723</td><td>Covered</td></tr>
-                <tr><td>Service List (web)</td><td>node 13929:35313</td><td>Covered</td></tr>
-                <tr><td>Category dropdown (web)</td><td>node 13929:35751</td><td>Covered</td></tr>
-                <tr><td>Category bottom sheet (mobile)</td><td>node 13929:32886</td><td>Covered</td></tr>
-                <tr><td>Hover delete (web)</td><td>node 14009:47989</td><td>Covered</td></tr>
-                <tr><td>Category Form</td><td>&mdash;</td><td>No design (use <code>/generate-ui</code>)</td></tr>
-                <tr><td>Export CSV</td><td>&mdash;</td><td>Web-only, no mobile design needed</td></tr>
-              </tbody>
-            </table>
-            <p><strong>Flag gaps:</strong> Flows without designs need either a Figma request or <span class="skill">/generate-ui</span>. Designs without documented flows might indicate undiscovered requirements.</p>
+            <details>
+              <summary><strong>Example (Service Management)</strong></summary>
+              <blockquote>
+                <p><strong>Service List flow:</strong></p>
+                <ul>
+                  <li>On web, the list looks like this: <a href="#">Figma &mdash; Web Service List</a></li>
+                  <li>On mobile, it looks like this: <a href="#">Figma &mdash; Mobile Service List</a></li>
+                  <li>Each category section has a three-dot menu. On web it's a dropdown: <a href="#">Figma &mdash; Category Dropdown</a></li>
+                  <li>On mobile, the three-dot opens a bottom sheet: <a href="#">Figma &mdash; Category Bottom Sheet</a></li>
+                </ul>
+                <p><strong>Delete Service flow:</strong></p>
+                <ul>
+                  <li>On mobile, you swipe left to reveal a red delete button: <a href="#">Figma &mdash; Swipe Delete</a></li>
+                  <li>On web, hovering a row shows a trash icon replacing the right columns: <a href="#">Figma &mdash; Hover Delete</a></li>
+                  <li>Tapping delete shows a confirmation dialog: <a href="#">Figma &mdash; Delete Confirmation</a></li>
+                </ul>
+                <p><strong>Manage Categories flow:</strong></p>
+                <ul>
+                  <li>No Figma design exists for the category form &rarr; use <span class="skill">/generate-ui</span></li>
+                </ul>
+              </blockquote>
+            </details>
+
+            <p>Flag gaps: flows without designs need either a Figma request or <span class="skill">/generate-ui</span>.</p>
+
+            <h4>2. Explain each flow &amp; functional requirements</h4>
+            <p>Merge the existing app documentation (from Step 3) with the new Figma designs. For each flow, explain what the user sees, what happens on each action, validations, permissions, and platform differences.</p>
+
+            <h4>3. Paste the Interview Prompt</h4>
+            <p>At the end of your message, paste the <a href="#prompt-interview">Interview Prompt</a>. Claude will read everything you wrote and interview you in depth about technical implementation, UI/UX tradeoffs, roles &amp; permissions, flow decisions, edge cases, and more &mdash; asking only non-obvious questions. It keeps going until every ambiguity is resolved.</p>
+
+            <div class="callout callout-info">
+              Many answers will be "Check squire-app and match its behavior" &mdash; that's fine, it ensures alignment. Once the interview is complete, Claude writes both the Jira document and the technical spec to their files.
+            </div>
+
+            <p><strong>After the interview:</strong> Read the final spec and verify it makes sense. Repeat for all remaining tickets.</p>
           </div>
 
           <!-- Step 5 -->
           <div class="step" id="step-5">
             <div class="step-header">
               <div class="step-num doc">5</div>
-              <div class="step-title">Write Final Specs (Interview-Driven)</div>
-            </div>
-            <p>Take each ticket and merge the existing app documentation with the new Figma designs. Explain the flow, functional requirements, and attach Figma links. Then use the <a href="#prompt-interview">Interview Prompt</a>.</p>
-            <p>Claude will ask detailed questions that shape the final spec. Many answers will be "Check squire-app and match its behavior" &mdash; that's fine, it ensures alignment.</p>
-            <p><strong>After the interview:</strong> Read the final spec and verify it makes sense. Repeat for all remaining tickets.</p>
-          </div>
-
-          <!-- Step 6 -->
-          <div class="step" id="step-6">
-            <div class="step-header">
-              <div class="step-num doc">6</div>
               <div class="step-title">Validate Specs</div>
             </div>
             <p>Before moving to planning, run <span class="skill">/validate-spec</span> on all specs:</p>
@@ -1047,10 +1080,10 @@
         <section class="section" id="phase-2-plan">
           <h2 class="section-anchor">Phase 2: Planning <span class="phase-tag plan">Planning</span></h2>
 
-          <!-- Step 7 -->
-          <div class="step" id="step-7">
+          <!-- Step 6 -->
+          <div class="step" id="step-6">
             <div class="step-header">
-              <div class="step-num plan">7</div>
+              <div class="step-num plan">6</div>
               <div class="step-title">Generate Implementation Plan</div>
             </div>
             <p>Use <span class="skill">/implementation-plan</span> to analyze all specs and create a phased roadmap:</p>
@@ -1065,10 +1098,10 @@
             </ul>
           </div>
 
-          <!-- Step 8 -->
-          <div class="step" id="step-8">
+          <!-- Step 7 -->
+          <div class="step" id="step-7">
             <div class="step-header">
-              <div class="step-num plan">8</div>
+              <div class="step-num plan">7</div>
               <div class="step-title">Validate &amp; Adjust the Plan</div>
             </div>
             <p>Review the generated plan:</p>
@@ -1095,12 +1128,12 @@
               <div class="step-num impl">&#8644;</div>
               <div class="step-title">Context Window Management</div>
             </div>
-            <p>Claude's context window (200k tokens) fills fast when reading specs + codebase. Use these rules:</p>
+            <p>Claude's context window (1M tokens with Opus, 200k with Sonnet) is large but still fills when reading specs + codebase. Use these rules:</p>
             <table>
               <thead><tr><th>Task</th><th>Conversation Strategy</th></tr></thead>
               <tbody>
-                <tr><td>All documentation (Steps 1&ndash;6)</td><td>1 conversation</td></tr>
-                <tr><td>Planning (Steps 7&ndash;8)</td><td>Same or new conversation</td></tr>
+                <tr><td>All documentation (Steps 1&ndash;5)</td><td>1 conversation</td></tr>
+                <tr><td>Planning (Steps 6&ndash;7)</td><td>Same or new conversation</td></tr>
                 <tr><td>Implementation (per phase)</td><td><strong>New conversation per 1&ndash;3 phases</strong></td></tr>
                 <tr><td>Bug fixing / iteration</td><td>Same conversation as the phase</td></tr>
               </tbody>
@@ -1108,10 +1141,10 @@
             <p><strong>After each conversation:</strong> Update the implementation plan with decisions and status before closing.</p>
           </div>
 
-          <!-- Step 9 -->
-          <div class="step" id="step-9">
+          <!-- Step 8 -->
+          <div class="step" id="step-8">
             <div class="step-header">
-              <div class="step-num impl">9</div>
+              <div class="step-num impl">8</div>
               <div class="step-title">Implement Phase by Phase</div>
             </div>
             <p>For each phase:</p>
@@ -1186,10 +1219,10 @@
             </div>
           </div>
 
-          <!-- Step 10 -->
-          <div class="step" id="step-10">
+          <!-- Step 9 -->
+          <div class="step" id="step-9">
             <div class="step-header">
-              <div class="step-num impl">10</div>
+              <div class="step-num impl">9</div>
               <div class="step-title">Upload to Jira</div>
             </div>
             <p>After <strong>all implementation phases are complete</strong> and specs are finalized, upload the documentation to Jira:</p>
@@ -1206,11 +1239,12 @@
           <div class="prompt-card" id="prompt-interview">
             <div class="prompt-card-header">
               <span class="prompt-card-title">&#128172; Interview Prompt</span>
-              <span class="prompt-card-when">Step 5</span>
+              <span class="prompt-card-when">Step 4</span>
             </div>
-            <pre><code>Read this SPEC and interview me in detail using the AskUserQuestionTool about literally
-anything: technical implementation, UI & UX, concerns, tradeoffs, roles, permissions,
-flow decisions, etc. but make sure the questions are not obvious.
+            <pre><code>Read these considerations and the SPECS, then interview me in detail using the
+AskUserQuestionTool about literally anything: technical implementation, UI & UX,
+concerns, tradeoffs, roles, permissions, flow decisions, etc. but make sure the
+questions are not obvious.
 
 Be very in-depth and continue interviewing me continually until it's complete, then
 write both the Jira and the Spec to those files.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
@@ -1219,7 +1253,7 @@ write both the Jira and the Spec to those files.</code><button class="copy-btn" 
           <div class="prompt-card">
             <div class="prompt-card-header">
               <span class="prompt-card-title">&#128640; Implementation Kickoff</span>
-              <span class="prompt-card-when">Step 9</span>
+              <span class="prompt-card-when">Step 8</span>
             </div>
             <pre><code>Read docs/&lt;FEATURE&gt;/implementation_plan.md and implement Phase &lt;N&gt;.
 After reading, ask me any questions before starting.
@@ -1229,7 +1263,7 @@ Use sub-agents for parallelizable work.</code><button class="copy-btn" onclick="
           <div class="prompt-card" id="prompt-iteration">
             <div class="prompt-card-header">
               <span class="prompt-card-title">&#128270; Iteration Prompt</span>
-              <span class="prompt-card-when">Step 9.3</span>
+              <span class="prompt-card-when">Step 8.3</span>
             </div>
             <pre><code>Here are the issues I found while testing:
 1. &lt;issue&gt;
@@ -1245,7 +1279,7 @@ Fix them, then update all documentation:
           <div class="prompt-card">
             <div class="prompt-card-header">
               <span class="prompt-card-title">&#127937; Phase Completion</span>
-              <span class="prompt-card-when">Step 9.4</span>
+              <span class="prompt-card-when">Step 8.4</span>
             </div>
             <pre><code>Phase &lt;N&gt; is complete. Please:
 1. Update the implementation plan — mark Phase &lt;N&gt; as Complete, add any gotchas

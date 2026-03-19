@@ -1149,18 +1149,10 @@
             </div>
             <p>For each phase:</p>
             <ol>
-              <li><strong>Read &amp; ask</strong> &mdash; Claude reads the plan + relevant specs. If it has questions, answer them. If not, it starts implementing.</li>
+              <li><strong>Read &amp; ask</strong> &mdash; Start a new conversation and paste the <a href="#prompt-kickoff">Implementation Kickoff</a> prompt. Claude reads the plan + relevant specs. If it has questions, answer them. If not, it starts implementing.</li>
               <li><strong>First pass</strong> &mdash; Claude implements the phase. Use sub-agents for independent work (e.g., multiple components in Phase 0).</li>
               <li><strong>Iterate</strong> &mdash; Play with the feature. Make a list of bugs, design mistakes, and issues. Share them with Claude using the <a href="#prompt-iteration">Iteration Prompt</a>.</li>
-              <li><strong>Document</strong> &mdash; After the phase is stable:
-                <ul>
-                  <li>Update the implementation plan status</li>
-                  <li>Add gotchas to the "Gotchas &amp; Lessons Learned" section</li>
-                  <li>Add bugs to the "Bug Fixes Applied" section</li>
-                  <li>Update specs and jira docs if any decisions changed</li>
-                </ul>
-              </li>
-              <li><strong>PR</strong> &mdash; Use <span class="skill">/review-pr</span> then <span class="skill">/create-pr</span></li>
+              <li><strong>Document &amp; PR</strong> &mdash; Once the phase is stable, paste the <a href="#prompt-completion">Phase Completion</a> prompt.</li>
             </ol>
           </div>
 
@@ -1250,13 +1242,19 @@ Be very in-depth and continue interviewing me continually until it's complete, t
 write both the Jira and the Spec to those files.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
           </div>
 
-          <div class="prompt-card">
+          <div class="prompt-card" id="prompt-kickoff">
             <div class="prompt-card-header">
               <span class="prompt-card-title">&#128640; Implementation Kickoff</span>
               <span class="prompt-card-when">Step 8</span>
             </div>
-            <pre><code>Read docs/&lt;FEATURE&gt;/implementation_plan.md and implement Phase &lt;N&gt;.
-After reading, ask me any questions before starting.
+            <pre><code>Read docs/&lt;FEATURE&gt;/implementation_plan.md and every spec referenced
+by Phase &lt;N&gt;. Then, before writing any code:
+
+1. List what you understand Phase &lt;N&gt; requires.
+2. Flag anything that is ambiguous, under-specified, or where you'd
+   have to guess — ask me about each one using AskUserQuestion.
+
+Once all questions are resolved, implement Phase &lt;N&gt;.
 Use sub-agents for parallelizable work.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
           </div>
 
@@ -1276,7 +1274,7 @@ Fix them, then update all documentation:
 - Jira documents: if acceptance criteria or behavior changed</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
           </div>
 
-          <div class="prompt-card">
+          <div class="prompt-card" id="prompt-completion">
             <div class="prompt-card-header">
               <span class="prompt-card-title">&#127937; Phase Completion</span>
               <span class="prompt-card-when">Step 8.4</span>

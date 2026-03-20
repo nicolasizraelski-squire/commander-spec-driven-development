@@ -1096,6 +1096,13 @@
               <li><strong>Empty sections</strong> for gotchas and bug fixes (populated during implementation)</li>
               <li><strong>Cleanup phase</strong> at the end (mandatory)</li>
             </ul>
+            <div class="callout">
+              <span class="callout-icon">&#128269;</span>
+              <div>
+                <p><strong>Before creating new components:</strong> The plan must search the codebase for existing shared components, hooks, or utilities that already match the feature's needs. Reuse first, create second.</p>
+                <p style="margin-top:8px">Also identify components across phases that can be <strong>abstracted into shared pieces</strong> &mdash; if two screens need a similar card or list, plan a shared component in Phase 0 instead of building it twice.</p>
+              </div>
+            </div>
           </div>
 
           <!-- Step 7 -->
@@ -1110,6 +1117,8 @@
               <li>Are the PR sizes reasonable for review?</li>
               <li>Are there any cross-feature dependencies the plan missed?</li>
               <li>Do the architecture decisions align with how you want to build it?</li>
+              <li>Did it find and reuse existing codebase components instead of planning new ones?</li>
+              <li>Are there similar components across phases that should be abstracted into shared pieces in Phase 0?</li>
             </ul>
             <div class="callout callout-warn">
               <span class="callout-icon">&#9889;</span>
@@ -1154,6 +1163,18 @@
               <li><strong>Iterate</strong> &mdash; Play with the feature. Make a list of bugs, design mistakes, and issues. Share them with Claude using the <a href="#prompt-iteration">Iteration Prompt</a>.</li>
               <li><strong>Document &amp; PR</strong> &mdash; Once the phase is stable, paste the <a href="#prompt-completion">Phase Completion</a> prompt.</li>
             </ol>
+            <div class="callout callout-warn">
+              <span class="callout-icon">&#127912;</span>
+              <div>
+                <p><strong>Respect the Figma designs.</strong> Do not underestimate design fidelity &mdash; exact texts, spacing, colors, icons, and interactions from the designs must be matched precisely. Designs are not suggestions; they are the spec for the UI. When in doubt, ask.</p>
+              </div>
+            </div>
+            <div class="callout">
+              <span class="callout-icon">&#128161;</span>
+              <div>
+                <p><strong>Learn from previous phases.</strong> Before implementing, always review gotchas and decisions documented in earlier phases of the implementation plan. Similar issues often recur &mdash; avoid re-discovering the same problems.</p>
+              </div>
+            </div>
           </div>
 
           <!-- Gotchas -->
@@ -1251,8 +1272,16 @@ write both the Jira and the Spec to those files.</code><button class="copy-btn" 
 by Phase &lt;N&gt;. Then, before writing any code:
 
 1. List what you understand Phase &lt;N&gt; requires.
-2. Flag anything that is ambiguous, under-specified, or where you'd
+2. Review gotchas and decisions from previous phases — apply any
+   lessons that are relevant to this phase.
+3. Search the codebase for existing components, hooks, or utilities
+   that match what this phase needs. Reuse before creating.
+4. Flag anything that is ambiguous, under-specified, or where you'd
    have to guess — ask me about each one using AskUserQuestion.
+
+IMPORTANT: Respect the Figma designs exactly — texts, spacing, colors,
+icons, and interactions must match the designs precisely. Do not
+approximate or improvise UI details.
 
 Once all questions are resolved, implement Phase &lt;N&gt;.
 Use sub-agents for parallelizable work.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>

@@ -593,7 +593,10 @@
       line-height: 1.85;
       color: var(--text);
       overflow-x: auto;
-      white-space: pre-wrap;
+      white-space: pre;
+      max-width: calc(100vw - 280px - 96px);
+      width: max-content;
+      min-width: 100%;
     }
 
     .workflow .wf-phase {
@@ -745,14 +748,14 @@
       <nav>
         <div class="nav-group">
           <div class="nav-group-title">Introduction</div>
-          <a href="#what-is-sdd"><span class="nav-icon">&#9670;</span> What is SDD?</a>
-          <a href="#specs-vs-prompts"><span class="nav-icon">&#8646;</span> Specs vs. Prompts</a>
-          <a href="#when-to-use"><span class="nav-icon">&#10004;</span> When to Use SDD</a>
+          <a href="#what-is-sdd"><span class="nav-icon">📋</span> What is SDD?</a>
+          <a href="#specs-vs-prompts"><span class="nav-icon">🔄</span> Specs vs. Prompts</a>
+          <a href="#when-to-use"><span class="nav-icon">✅</span> When to Use SDD</a>
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Our Workflow</div>
-          <a href="#overview"><span class="nav-icon">&#9673;</span> Overview</a>
-          <a href="#quick-reference"><span class="nav-icon">&#10003;</span> Quick Reference</a>
+          <a href="#overview"><span class="nav-icon">🔵</span> Overview</a>
+          <a href="#quick-reference"><span class="nav-icon">⚡</span> Quick Reference</a>
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Phase 1 &mdash; Documentation</div>
@@ -769,30 +772,29 @@
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Phase 3 &mdash; Implementation</div>
-          <a href="#context-mgmt"><span class="nav-icon">&#8644;</span> Context Management</a>
+          <a href="#context-mgmt"><span class="nav-icon">🔄</span> Context Management</a>
           <a href="#step-8"><span class="nav-icon">8</span> Implement by Phase</a>
-          <a href="#gotchas"><span class="nav-icon">!</span> Gotchas &amp; Lessons</a>
-          <a href="#bug-tracking"><span class="nav-icon">&#128027;</span> Bug Tracking</a>
-          <a href="#updating-docs"><span class="nav-icon">&#9998;</span> Updating Documents</a>
+          <a href="#gotchas"><span class="nav-icon">⚡</span> Gotchas &amp; Lessons</a>
+          <a href="#updating-docs"><span class="nav-icon">📝</span> Updating Documents</a>
           <a href="#step-9"><span class="nav-icon">9</span> Upload to Jira</a>
         </div>
         <div class="nav-group">
           <div class="nav-group-title">Reference</div>
-          <a href="#prompts"><span class="nav-icon">&#10095;</span> Standard Prompts</a>
-          <a href="#skills"><span class="nav-icon">&#9881;</span> Skills Reference</a>
-          <a href="#file-structure"><span class="nav-icon">&#128193;</span> File Structure</a>
+          <a href="#prompts"><span class="nav-icon">💬</span> Standard Prompts</a>
+          <a href="#skills"><span class="nav-icon">⚙️</span> Skills Reference</a>
+          <a href="#file-structure"><span class="nav-icon">📁</span> File Structure</a>
         </div>
       </nav>
     </aside>
 
-    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">&#9776;</button>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle navigation">☰</button>
 
     <!-- MAIN -->
     <main class="main">
       <!-- HERO -->
       <header class="hero">
         <div class="hero-inner">
-          <div class="hero-badge">&#128736;&#65039; Team Framework v1.0</div>
+          <div class="hero-badge">🛠️ Team Framework v2.0</div>
           <h1>Spec-Driven Development</h1>
           <p>A methodology for building complex features with AI assistance. Specifications are durable; prompts are ephemeral. Think thoroughly first, build confidently after.</p>
           <div class="hero-phases">
@@ -829,7 +831,7 @@
           <p>Spec-Driven Development (SDD) is a methodology that treats <strong>specifications as executable blueprints</strong> that continuously guide AI-assisted implementation. Instead of feeding natural-language prompts into an AI and hoping for the best, SDD creates durable, version-controlled artifacts that serve as the single source of truth throughout the entire development lifecycle.</p>
 
           <div class="callout callout-info">
-            <span class="callout-icon">&#128161;</span>
+            <span class="callout-icon">💡</span>
             <div>
               <p><strong>The core insight:</strong> Prompts are ephemeral &mdash; they lose context between sessions, vary by developer, and leave no trace. Specifications are durable &mdash; they persist across sessions, enforce consistency, and compound knowledge over time.</p>
             </div>
@@ -890,9 +892,9 @@
           </table>
 
           <div class="callout callout-success">
-            <span class="callout-icon">&#9889;</span>
+            <span class="callout-icon">⚡</span>
             <div>
-              <p><strong>Rule of thumb:</strong> If you'd spend more than a day implementing it, spend a few hours speccing it first. The documentation + planning phases pay for themselves by eliminating mid-implementation surprises and producing Jira-ready documentation as a byproduct.</p>
+              <p><strong>Rule of thumb:</strong> If you'd spend more than a day implementing it, spend a few hours speccing it first. The documentation + planning phases pay for themselves by eliminating mid-implementation surprises. Jira-ready documentation is synthesized automatically from the final specs after implementation.</p>
             </div>
           </div>
         </section>
@@ -903,7 +905,7 @@
           <p>We are consolidating two apps (React web + native iOS) into a single Expo codebase sharing the same backend (squire-api). Every feature goes through three phases: <strong>Documentation</strong>, <strong>Planning</strong>, and <strong>Implementation</strong>.</p>
 
           <div class="callout callout-warn">
-            <span class="callout-icon">&#9200;</span>
+            <span class="callout-icon">⏰</span>
             <div>
               <p><strong>Time investment:</strong> Expect the documentation + planning phases to take a full day or more for medium-to-large features. This is intentional &mdash; spending time thinking early prevents costly rework later.</p>
             </div>
@@ -920,26 +922,27 @@
         <section class="section" id="quick-reference">
           <h2 class="section-anchor">Quick Reference: Complete Workflow</h2>
           <div class="workflow"><span class="wf-phase doc">DOCUMENTATION</span>
- <span class="wf-step"> 1.</span> Analyze feature <span class="wf-arrow">&rarr;</span> identify sub-flows <span class="wf-arrow">&rarr;</span> list tickets
- <span class="wf-step"> 2.</span> Create empty Jira tickets in Epic
- <span class="wf-step"> 3.</span> Validate ticket list against Figma designs
- <span class="wf-step"> 4.</span> <span class="wf-skill">/feature-spec</span> &lt;feature&gt; &lt;sub-flows&gt;          <span class="wf-note">&rarr; generates _spec.md + _jira.md</span>
- <span class="wf-step"> 5.</span> Review technical specs, request changes
- <span class="wf-step"> 6.</span> Design coverage matrix                        <span class="wf-note">&rarr; map every screen/state to Figma frames</span>
- <span class="wf-step"> 7.</span> Write final specs using interview prompt       <span class="wf-note">&rarr; refine _spec.md + _jira.md</span>
- <span class="wf-step"> 8.</span> <span class="wf-skill">/validate-spec</span> &lt;feature&gt;                      <span class="wf-note">&rarr; cross-check everything</span>
+ <span class="wf-step">&middot;</span> Analyze feature <span class="wf-arrow">&rarr;</span> identify sub-flows <span class="wf-arrow">&rarr;</span> list tickets
+ <span class="wf-step">&middot;</span> Create empty Jira tickets in Epic
+ <span class="wf-step">&middot;</span> Validate ticket list against Figma designs
+ <span class="wf-step">&middot;</span> <span class="wf-skill">/feature-spec</span> &lt;feature&gt; &lt;sub-flows&gt;                              <span class="wf-note">&rarr; generates one _spec.md per flow</span>
+ <span class="wf-step">&middot;</span> Review technical specs, request changes
+ <span class="wf-step">&middot;</span> Design coverage matrix                                            <span class="wf-note">&rarr; map every screen/state to Figma frames</span>
+ <span class="wf-step">&middot;</span> Write final specs using interview prompt                           <span class="wf-note">&rarr; refine _spec.md files</span>
+ <span class="wf-step">&middot;</span> <span class="wf-skill">/validate-spec</span> &lt;feature&gt;                                          <span class="wf-note">&rarr; Figma, API, permissions, upload-readiness</span>
 
 <span class="wf-phase plan">PLANNING</span>
- <span class="wf-step"> 9.</span> <span class="wf-skill">/implementation-plan</span> &lt;feature&gt;                <span class="wf-note">&rarr; phased plan with Phase 0</span>
-<span class="wf-step">10.</span> Review &amp; adjust plan
+ <span class="wf-step">&middot;</span> <span class="wf-skill">/implementation-plan</span> &lt;feature&gt;                                    <span class="wf-note">&rarr; phased plan with Phase 0 + shared code reuse</span>
+ <span class="wf-step">&middot;</span> Review &amp; adjust plan
 
 <span class="wf-phase impl">IMPLEMENTATION</span>
-<span class="wf-step">11.</span> For each phase:
-    a. New conversation <span class="wf-arrow">&rarr;</span> "Read plan, implement Phase N"
-    b. Iterate (play, find bugs, fix)
-    c. Update plan, specs, and jira docs
-    d. <span class="wf-skill">/review-pr</span> <span class="wf-arrow">&rarr;</span> <span class="wf-skill">/create-pr</span>
-<span class="wf-step">12.</span> <span class="wf-skill">/upload-jira</span> &lt;feature&gt; &lt;ticket mappings&gt;      <span class="wf-note">&rarr; push final docs to Jira</span></div>
+ <span class="wf-step">&middot;</span> For each phase:
+     <span class="wf-step">&middot;</span> New conversation <span class="wf-arrow">&rarr;</span> paste <span class="wf-skill">Implementation Kickoff</span> prompt
+     <span class="wf-step">&middot;</span> Claude implements <span class="wf-arrow">&rarr;</span> use sub-agents for parallel work
+     <span class="wf-step">&middot;</span> Iterate (play, find bugs, fix) <span class="wf-arrow">&rarr;</span> paste <span class="wf-skill">Iteration</span> prompt
+     <span class="wf-step">&middot;</span> Update plan + specs <span class="wf-arrow">&rarr;</span> paste <span class="wf-skill">Phase Completion</span> prompt
+     <span class="wf-step">&middot;</span> <span class="wf-skill">/review-pr</span> <span class="wf-arrow">&rarr;</span> <span class="wf-skill">/create-pr</span>
+ <span class="wf-step">&middot;</span> <span class="wf-skill">/upload-jira</span> &lt;feature&gt; &lt;ticket mappings&gt;                          <span class="wf-note">&rarr; synthesize Jira content from specs &amp; upload</span></div>
         </section>
 
         <!-- ═══ PHASE 1: DOCUMENTATION ═══ -->
@@ -957,17 +960,27 @@
             <ul>
               <li>Look at the feature in Web Commander and the new Figma designs</li>
               <li>Identify distinct screens, flows, and user interactions</li>
-              <li><strong>Ticket sizing rule:</strong> 1 ticket = 1 screen or 1 user-facing flow that can be demo'd independently. If a flow has 2+ distinct UI modes (e.g., create vs edit category), it's still one ticket if they share 80%+ of the UI. If they diverge significantly, split them.</li>
+              <li><strong>Ticket sizing rule:</strong> 1 ticket = 1 independently demo-able flow. Each ticket gets its own spec file and its own PR. Even if two flows share UI (e.g., Create Service and Edit Service share the same form), they should be separate tickets if the logic differs.</li>
               <li>Consider what a reviewer can reasonably review in one PR</li>
             </ul>
+            <div class="callout callout-warn">
+              <span class="callout-icon">⚠️</span>
+              <div><p><strong>One ticket = one spec file.</strong> If a sub-feature within a flow is complex enough to need its own acceptance criteria and testing (e.g., a duration picker with custom wheel behavior, a multi-select tax bottom sheet), it should be its own Jira ticket and its own spec file. When in doubt, split &mdash; it's easier to merge two small PRs than to review one massive one.</p></div>
+            </div>
+
             <h4>Example (Service Management):</h4>
             <ul>
-              <li>Service List (view, filter, category grouping)</li>
-              <li>Delete Service (swipe mobile, hover web, confirmation)</li>
-              <li>Manage Categories (create, edit, delete)</li>
-              <li>Manage Service Order (drag-and-drop reorder)</li>
-              <li>Reset Service Order (API call + confirmation)</li>
-              <li>Export CSV (web-only download)</li>
+              <li>Create Service</li>
+              <li>Edit Service</li>
+              <li>Delete Service</li>
+              <li>Manage Categories</li>
+              <li>Optional Staff Assignments</li>
+              <li>Service List</li>
+              <li>Toggle Service Enabled/Disabled</li>
+              <li>Manage Service Order (drag &amp; drop)</li>
+              <li>Reset Service Order</li>
+              <li>Localized Service Names</li>
+              <li>Export Services CSV (web only)</li>
             </ul>
           </div>
 
@@ -991,17 +1004,24 @@
               <div class="step-title">Document Existing Apps</div>
             </div>
             <p>Use <span class="skill">/feature-spec</span> to reverse-engineer each sub-flow from the existing apps:</p>
-            <pre><code>/feature-spec ServiceManagement service_list, delete_service, manage_categories, manage_order, reset_order, export_csv</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
-            <p>This produces two documents per feature:</p>
-            <ul>
-              <li><code>_spec.md</code> &mdash; Technical spec for engineers</li>
-              <li><code>_jira.md</code> &mdash; Functional docs for QA/PM</li>
-            </ul>
+            <pre><code>/feature-spec Services create_service, edit_service, delete_service, manage_categories, service_list, toggle_service, manage_order, reset_order, localized_names, export_csv</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+            <p>This produces <strong>one <code>_spec.md</code> file per flow</strong> &mdash; a technical spec for engineers that serves as the single source of truth:</p>
+            <pre><code>docs/services/
+├── create_service_spec.md
+├── edit_service_spec.md
+├── delete_service_spec.md
+├── manage_categories_spec.md
+├── service_list_spec.md
+├── toggle_service_spec.md
+├── manage_service_order_spec.md
+├── reset_service_order_spec.md
+├── localized_service_names_spec.md
+└── export_services_csv_spec.md</code></pre>
             <div class="callout callout-info">
-              <span class="callout-icon">&#128161;</span>
+              <span class="callout-icon">💡</span>
               <div><p><strong>Tip:</strong> Ask Claude to launch sub-agents for parallel documentation when documenting multiple sub-flows. This significantly speeds up the process.</p></div>
             </div>
-            <p>After all docs are created, review the <strong>technical spec</strong> (it's the most detailed) and request changes to both documents if needed.</p>
+            <p>After all specs are created, review them and request changes if needed.</p>
           </div>
 
           <!-- Step 4 -->
@@ -1010,47 +1030,39 @@
               <div class="step-num doc">4</div>
               <div class="step-title">Write Final Specs (Interview-Driven)</div>
             </div>
-            <p>For each ticket, you'll prepare a context document, then let Claude interview you to fill in every gap. This is a single prompt &mdash; here's what to include:</p>
+            <p>For <strong>each ticket</strong>, send Claude a <strong>single message</strong> containing these three things:</p>
 
-            <h4>1. Map designs to flows</h4>
-            <p>Walk through each flow as if you were a user and link the corresponding Figma frame for every screen and interaction state. Be specific &mdash; link each platform variant and each interaction state, not just "the service list."</p>
+            <h4>1. Figma links for this flow</h4>
+            <p>Walk through the flow as if you were a user and link the corresponding Figma frame for every screen and interaction state. Be specific &mdash; link each platform variant (web vs mobile) and each state (default, hover, error, empty).</p>
+            <p>If a flow has no Figma designs, flag it and use <span class="skill">/generate-ui</span> instead.</p>
 
             <details>
-              <summary><strong>Example (Service Management)</strong></summary>
+              <summary><strong>Example: Edit Service ticket</strong></summary>
               <blockquote>
-                <p><strong>Service List flow:</strong></p>
+                <p><strong>Edit Service form:</strong></p>
                 <ul>
-                  <li>On web, the list looks like this: <a href="#">Figma &mdash; Web Service List</a></li>
-                  <li>On mobile, it looks like this: <a href="#">Figma &mdash; Mobile Service List</a></li>
-                  <li>Each category section has a three-dot menu. On web it's a dropdown: <a href="#">Figma &mdash; Category Dropdown</a></li>
-                  <li>On mobile, the three-dot opens a bottom sheet: <a href="#">Figma &mdash; Category Bottom Sheet</a></li>
-                </ul>
-                <p><strong>Delete Service flow:</strong></p>
-                <ul>
-                  <li>On mobile, you swipe left to reveal a red delete button: <a href="#">Figma &mdash; Swipe Delete</a></li>
-                  <li>On web, hovering a row shows a trash icon replacing the right columns: <a href="#">Figma &mdash; Hover Delete</a></li>
-                  <li>Tapping delete shows a confirmation dialog: <a href="#">Figma &mdash; Delete Confirmation</a></li>
-                </ul>
-                <p><strong>Manage Categories flow:</strong></p>
-                <ul>
-                  <li>No Figma design exists for the category form &rarr; use <span class="skill">/generate-ui</span></li>
+                  <li>Mobile form layout: <a href="#">Figma &mdash; Edit Service Mobile</a></li>
+                  <li>Web form layout: <a href="#">Figma &mdash; Edit Service Web</a></li>
+                  <li>Category dropdown opens a bottom sheet on mobile: <a href="#">Figma &mdash; Category Bottom Sheet</a></li>
+                  <li>Duration picker uses a scroll wheel: <a href="#">Figma &mdash; Duration Picker</a></li>
+                  <li>Tax selection is a multi-select bottom sheet: <a href="#">Figma &mdash; Tax Selection</a></li>
+                  <li>Save button disabled state: <a href="#">Figma &mdash; Save Disabled</a></li>
                 </ul>
               </blockquote>
             </details>
 
-            <p>Flag gaps: flows without designs need either a Figma request or <span class="skill">/generate-ui</span>.</p>
+            <h4>2. Flow description &amp; functional requirements</h4>
+            <p>Merge the existing app documentation (from Step 3) with the Figma designs. Describe what the user sees, what happens on each action, validations, permissions, and platform differences for <strong>this specific ticket</strong>.</p>
 
-            <h4>2. Explain each flow &amp; functional requirements</h4>
-            <p>Merge the existing app documentation (from Step 3) with the new Figma designs. For each flow, explain what the user sees, what happens on each action, validations, permissions, and platform differences.</p>
-
-            <h4>3. Paste the Interview Prompt</h4>
-            <p>At the end of your message, paste the <a href="#prompt-interview">Interview Prompt</a>. Claude will read everything you wrote and interview you in depth about technical implementation, UI/UX tradeoffs, roles &amp; permissions, flow decisions, edge cases, and more &mdash; asking only non-obvious questions. It keeps going until every ambiguity is resolved.</p>
+            <h4>3. The Interview Prompt</h4>
+            <p>Paste the <a href="#prompt-interview">Interview Prompt</a> at the end. Claude will read everything you wrote, then interview you in depth about technical implementation, UI/UX tradeoffs, roles &amp; permissions, edge cases, and more &mdash; asking only non-obvious questions. It keeps going until every ambiguity is resolved.</p>
 
             <div class="callout callout-info">
-              Many answers will be "Check squire-app and match its behavior" &mdash; that's fine, it ensures alignment. Once the interview is complete, Claude writes both the Jira document and the technical spec to their files.
+              <span class="callout-icon">💡</span>
+              <div>Many answers will be "Check squire-app and match its behavior" &mdash; that's fine, it ensures alignment. Once the interview is complete, Claude writes the final spec to its file.</div>
             </div>
 
-            <p><strong>After the interview:</strong> Read the final spec and verify it makes sense. Repeat for all remaining tickets.</p>
+            <p><strong>After the interview:</strong> Read the final spec and verify it makes sense. <strong>Repeat this step for each remaining ticket.</strong></p>
           </div>
 
           <!-- Step 5 -->
@@ -1065,13 +1077,14 @@
             <ul>
               <li>All Figma links are valid and accessible</li>
               <li>All API endpoints exist in <code>@squire/api</code> or <code>src/api/</code></li>
-              <li>All three user types (Brand, Shop, Barber) are covered in every ticket</li>
+              <li>All three user types (Brand, Shop, Barber) are covered in every spec</li>
               <li>Permissions match squire-app exactly (prompts you for any differences)</li>
-              <li>Jira documents have all required sections for <span class="skill">/upload-jira</span></li>
+              <li>Implementation plan consistency (if it exists)</li>
+              <li><strong>Upload-readiness</strong> &mdash; checks that each spec has enough substantive content for <span class="skill">/upload-jira</span> to synthesize quality Jira fields (acceptance criteria, permissions, edge cases, etc.)</li>
             </ul>
             <div class="callout callout-warn">
-              <span class="callout-icon">&#9888;&#65039;</span>
-              <div><p><strong>Fix everything flagged before proceeding.</strong> This prevents mid-implementation surprises.</p></div>
+              <span class="callout-icon">⚠️</span>
+              <div><p><strong>Fix everything flagged before proceeding.</strong> Specs with 2+ missing sections are flagged as blockers &mdash; <span class="skill">/upload-jira</span> will produce incomplete Jira content without them.</p></div>
             </div>
           </div>
         </section>
@@ -1097,10 +1110,16 @@
               <li><strong>Cleanup phase</strong> at the end (mandatory)</li>
             </ul>
             <div class="callout">
-              <span class="callout-icon">&#128269;</span>
+              <span class="callout-icon">🔍</span>
               <div>
-                <p><strong>Before creating new components:</strong> The plan must search the codebase for existing shared components, hooks, or utilities that already match the feature's needs. Reuse first, create second.</p>
-                <p style="margin-top:8px">Also identify components across phases that can be <strong>abstracted into shared pieces</strong> &mdash; if two screens need a similar card or list, plan a shared component in Phase 0 instead of building it twice.</p>
+                <p><strong>Reuse first, create second.</strong> The plan searches these codebase locations for existing reusable code before planning new components:</p>
+                <ul style="margin:8px 0;font-size:0.9em">
+                  <li><code>@squire/ui</code> &mdash; base UI components (Box, Text, Input, etc.)</li>
+                  <li><code>src/components/_shared/</code> &mdash; shared project components</li>
+                  <li><code>src/hooks/permissions/</code> &mdash; permission hooks</li>
+                  <li><code>src/constants/</code> and <code>src/utils/</code> &mdash; existing constants and utilities</li>
+                </ul>
+                <p>Also identify components across phases that can be <strong>abstracted into shared pieces</strong> &mdash; if two screens need a similar card or list, plan a shared component in Phase 0 instead of building it twice.</p>
               </div>
             </div>
           </div>
@@ -1121,7 +1140,7 @@
               <li>Are there similar components across phases that should be abstracted into shared pieces in Phase 0?</li>
             </ul>
             <div class="callout callout-warn">
-              <span class="callout-icon">&#9889;</span>
+              <span class="callout-icon">⚡</span>
               <div><p>This is the <strong>last chance to change course cheaply</strong>. Make adjustments now.</p></div>
             </div>
           </div>
@@ -1134,7 +1153,7 @@
           <!-- Context Management -->
           <div class="step" id="context-mgmt">
             <div class="step-header">
-              <div class="step-num impl">&#8644;</div>
+              <div class="step-num impl">🔄</div>
               <div class="step-title">Context Window Management</div>
             </div>
             <p>Claude's context window (1M tokens with Opus, 200k with Sonnet) is large but still fills when reading specs + codebase. Use these rules:</p>
@@ -1164,13 +1183,13 @@
               <li><strong>Document &amp; PR</strong> &mdash; Once the phase is stable, paste the <a href="#prompt-completion">Phase Completion</a> prompt.</li>
             </ol>
             <div class="callout callout-warn">
-              <span class="callout-icon">&#127912;</span>
+              <span class="callout-icon">🎨</span>
               <div>
                 <p><strong>Respect the Figma designs.</strong> Do not underestimate design fidelity &mdash; exact texts, spacing, colors, icons, and interactions from the designs must be matched precisely. Designs are not suggestions; they are the spec for the UI. When in doubt, ask.</p>
               </div>
             </div>
             <div class="callout">
-              <span class="callout-icon">&#128161;</span>
+              <span class="callout-icon">💡</span>
               <div>
                 <p><strong>Learn from previous phases.</strong> Before implementing, always review gotchas and decisions documented in earlier phases of the implementation plan. Similar issues often recur &mdash; avoid re-discovering the same problems.</p>
               </div>
@@ -1180,7 +1199,7 @@
           <!-- Gotchas -->
           <div class="step" id="gotchas">
             <div class="step-header">
-              <div class="step-num impl">!</div>
+              <div class="step-num impl">⚡</div>
               <div class="step-title">Gotchas &amp; Lessons Learned</div>
             </div>
             <p>After every implementation phase, document gotchas in the implementation plan. These are <strong>institutional knowledge</strong> for the team.</p>
@@ -1192,42 +1211,24 @@
               <li><code>Platform.OS</code> checks don't work for responsive layouts &rarr; use <code>useResponsiveDevice().isDesktop</code></li>
             </ul>
             <div class="callout callout-success">
-              <span class="callout-icon">&#128218;</span>
+              <span class="callout-icon">📚</span>
               <div><p>These gotchas save future developers <strong>hours</strong> of debugging the same issues.</p></div>
             </div>
-          </div>
-
-          <!-- Bug Tracking -->
-          <div class="step" id="bug-tracking">
-            <div class="step-header">
-              <div class="step-num impl">&#128027;</div>
-              <div class="step-title">Bug Tracking During Iteration</div>
-            </div>
-            <p>When you "play with the feature and find bugs," track them in the implementation plan:</p>
-            <table>
-              <thead><tr><th>#</th><th>Bug</th><th>Phase</th><th>Resolution</th></tr></thead>
-              <tbody>
-                <tr><td>1</td><td>Include parameter missing in service fetch</td><td>1</td><td>Added <code>filters: { include: '...' }</code> to query</td></tr>
-                <tr><td>2</td><td>ThreeDotsIcon showing vertical instead of horizontal</td><td>1</td><td>Swapped icon orientation prop</td></tr>
-                <tr><td>3</td><td>Duration format showing "0 hr 30 min" instead of "30 min"</td><td>1</td><td>Skip zero components in format function</td></tr>
-              </tbody>
-            </table>
           </div>
 
           <!-- Updating Docs -->
           <div class="step" id="updating-docs">
             <div class="step-header">
-              <div class="step-num impl">&#9998;</div>
+              <div class="step-num impl">📝</div>
               <div class="step-title">Updating Documents</div>
             </div>
             <div class="callout callout-warn">
-              <span class="callout-icon">&#128680;</span>
+              <span class="callout-icon">🚨</span>
               <div>
                 <p><strong>Every implementation PR must include updates to:</strong></p>
                 <p>1. Implementation plan &mdash; phase status, new decisions, gotchas, bug fixes<br>
-                   2. Spec documents &mdash; if any behavior changed from the original spec<br>
-                   3. Jira documents &mdash; if acceptance criteria or behavior changed</p>
-                <p>This is not optional. Stale docs are worse than no docs.</p>
+                   2. Spec documents &mdash; if any behavior changed from the original spec</p>
+                <p>This is not optional. Stale docs are worse than no docs. Specs are the single source of truth &mdash; <span class="skill">/upload-jira</span> will synthesize Jira content from them after implementation.</p>
               </div>
             </div>
           </div>
@@ -1238,9 +1239,20 @@
               <div class="step-num impl">9</div>
               <div class="step-title">Upload to Jira</div>
             </div>
-            <p>After <strong>all implementation phases are complete</strong> and specs are finalized, upload the documentation to Jira:</p>
+            <p>After <strong>all implementation phases are complete</strong> and specs are finalized, synthesize and upload Jira content:</p>
             <pre><code>/upload-jira services SQR-3188 service list, SQR-3189 delete service, SQR-3190 manage categories</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
-            <p>This pushes the <code>_jira.md</code> content into each Jira ticket &mdash; descriptions, acceptance criteria, testing notes, and all custom fields. Do this <strong>after</strong> implementation is done so the Jira tickets reflect the final, tested behavior.</p>
+            <p>The skill follows this process:</p>
+            <ol>
+              <li><strong>Read sources</strong> &mdash; reads the final <code>_spec.md</code> files + <code>implementation_plan.md</code> (gotchas become testing notes, bug fixes become regression test cases)</li>
+              <li><strong>Match specs to tickets</strong> &mdash; matches each spec file to a Jira ticket by keyword overlap between filenames and ticket IDs/descriptions</li>
+              <li><strong>Synthesize</strong> &mdash; transforms technical spec content into non-technical Jira fields. API endpoints become functional descriptions, hook names become user-visible concepts, GIVEN/WHEN/THEN become testable checkboxes</li>
+              <li><strong>Check existing content</strong> &mdash; fetches current Jira ticket content and warns if fields will be overwritten, with a single confirmation for all tickets</li>
+              <li><strong>Upload</strong> &mdash; pushes synthesized content to each Jira ticket (description, acceptance criteria, testing notes, integration testing, release notes, and all custom fields)</li>
+            </ol>
+            <div class="callout callout-info">
+              <span class="callout-icon">💡</span>
+              <div><p><strong>Always run after implementation.</strong> The Jira tickets should reflect the final, tested behavior &mdash; not pre-implementation guesses. Gotchas discovered during development and bug fixes become part of the testing notes and regression test cases.</p></div>
+            </div>
           </div>
         </section>
 
@@ -1251,7 +1263,7 @@
 
           <div class="prompt-card" id="prompt-interview">
             <div class="prompt-card-header">
-              <span class="prompt-card-title">&#128172; Interview Prompt</span>
+              <span class="prompt-card-title">💬 Interview Prompt</span>
               <span class="prompt-card-when">Step 4</span>
             </div>
             <pre><code>Read these considerations and the SPECS, then interview me in detail using the
@@ -1260,12 +1272,12 @@ concerns, tradeoffs, roles, permissions, flow decisions, etc. but make sure the
 questions are not obvious.
 
 Be very in-depth and continue interviewing me continually until it's complete, then
-write both the Jira and the Spec to those files.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+write the final spec to its file.</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
           </div>
 
           <div class="prompt-card" id="prompt-kickoff">
             <div class="prompt-card-header">
-              <span class="prompt-card-title">&#128640; Implementation Kickoff</span>
+              <span class="prompt-card-title">🚀 Implementation Kickoff</span>
               <span class="prompt-card-when">Step 8</span>
             </div>
             <pre><code>Read docs/&lt;FEATURE&gt;/implementation_plan.md and every spec referenced
@@ -1289,7 +1301,7 @@ Use sub-agents for parallelizable work.</code><button class="copy-btn" onclick="
 
           <div class="prompt-card" id="prompt-iteration">
             <div class="prompt-card-header">
-              <span class="prompt-card-title">&#128270; Iteration Prompt</span>
+              <span class="prompt-card-title">🔎 Iteration Prompt</span>
               <span class="prompt-card-when">Step 8.3</span>
             </div>
             <pre><code>Here are the issues I found while testing:
@@ -1299,18 +1311,17 @@ Use sub-agents for parallelizable work.</code><button class="copy-btn" onclick="
 
 Fix them, then update all documentation:
 - Implementation plan: gotchas and bug fixes sections
-- Spec documents: if any behavior changed
-- Jira documents: if acceptance criteria or behavior changed</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+- Spec documents: if any behavior changed</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
           </div>
 
           <div class="prompt-card" id="prompt-completion">
             <div class="prompt-card-header">
-              <span class="prompt-card-title">&#127937; Phase Completion</span>
+              <span class="prompt-card-title">🏁 Phase Completion</span>
               <span class="prompt-card-when">Step 8.4</span>
             </div>
             <pre><code>Phase &lt;N&gt; is complete. Please:
 1. Update the implementation plan — mark Phase &lt;N&gt; as Complete, add any gotchas
-2. Update specs and jira docs if any behavior changed
+2. Update specs if any behavior changed
 3. Run /review-pr
 4. Run /create-pr</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
           </div>
@@ -1324,8 +1335,8 @@ Fix them, then update all documentation:
           <table>
             <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
             <tbody>
-              <tr><td><span class="skill">/feature-spec</span></td><td>Starting a new feature</td><td>Reverse-engineers Web/iOS into <code>_spec.md</code> + <code>_jira.md</code></td></tr>
-              <tr><td><span class="skill">/validate-spec</span></td><td>After all specs are written</td><td>Cross-checks Figma links, API availability, permissions, user types</td></tr>
+              <tr><td><span class="skill">/feature-spec</span></td><td>Starting a new feature</td><td>Reverse-engineers Web/iOS into one <code>_spec.md</code> per flow</td></tr>
+              <tr><td><span class="skill">/validate-spec</span></td><td>After all specs are written</td><td>Cross-checks Figma, APIs, permissions, user types, and upload-readiness for <span class="skill">/upload-jira</span></td></tr>
               <tr><td><span class="skill">/analyze-designs</span></td><td>When Figma designs exist</td><td>Extracts reusable design patterns into <code>design-patterns.md</code></td></tr>
             </tbody>
           </table>
@@ -1338,7 +1349,7 @@ Fix them, then update all documentation:
             </tbody>
           </table>
 
-          <h3>Implementation Phase</h3>
+          <h3>Implementation Phase &mdash; Scaffolding</h3>
           <table>
             <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
             <tbody>
@@ -1354,14 +1365,25 @@ Fix them, then update all documentation:
             </tbody>
           </table>
 
+          <h3>Implementation Phase &mdash; Quality &amp; Testing</h3>
+          <table>
+            <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><span class="skill">/lint</span></td><td>Before committing</td><td>Runs ESLint to check code quality, optionally auto-fixes</td></tr>
+              <tr><td><span class="skill">/test</span></td><td>After writing business logic or hooks</td><td>Runs Jest tests with optional coverage reporting</td></tr>
+              <tr><td><span class="skill">/maestro</span></td><td>After completing user flows</td><td>Creates or runs Maestro E2E tests</td></tr>
+              <tr><td><span class="skill">/commit</span></td><td>Ready to commit changes</td><td>Creates well-formatted git commit following conventions</td></tr>
+            </tbody>
+          </table>
+
           <h3>Review &amp; Ship Phase</h3>
           <table>
             <thead><tr><th>Skill</th><th>When</th><th>What it does</th></tr></thead>
             <tbody>
               <tr><td><span class="skill">/review-pr</span></td><td>Before creating PR</td><td>Code review against project standards</td></tr>
-              <tr><td><span class="skill">/fix-pr</span></td><td>After human review</td><td>Applies PR review feedback</td></tr>
+              <tr><td><span class="skill">/fix-pr</span></td><td>After human review comments</td><td>Structured approach to addressing PR review feedback</td></tr>
               <tr><td><span class="skill">/create-pr</span></td><td>Ready to submit</td><td>Creates PR with structured description</td></tr>
-              <tr><td><span class="skill">/upload-jira</span></td><td>After all implementation is done</td><td>Pushes final <code>_jira.md</code> content to Jira tickets</td></tr>
+              <tr><td><span class="skill">/upload-jira</span></td><td>After final cleanup phase</td><td>Synthesizes non-technical Jira content from specs + plan, warns before overwriting existing content, uploads to tickets</td></tr>
             </tbody>
           </table>
         </section>
@@ -1369,24 +1391,27 @@ Fix them, then update all documentation:
         <!-- ═══ FILE STRUCTURE ═══ -->
         <section class="section" id="file-structure">
           <h2 class="section-anchor">File Structure</h2>
-          <p>All feature documentation lives under <code>docs/&lt;feature_name&gt;/</code>:</p>
+          <p>All feature documentation lives under <code>docs/&lt;feature_name&gt;/</code>. Only specs and the implementation plan are stored in the repo &mdash; Jira content is synthesized on-demand by <span class="skill">/upload-jira</span>:</p>
           <pre><code>docs/
 └── services/
-    ├── service_list_spec.md              # Technical spec
-    ├── service_list_jira.md              # Jira/QA doc
+    ├── create_service_spec.md            # One spec file per ticket
+    ├── edit_service_spec.md
     ├── delete_service_spec.md
-    ├── delete_service_jira.md
     ├── manage_categories_spec.md
-    ├── manage_categories_jira.md
-    ├── ...
-    └── service_management_implementation_plan.md  # Living implementation plan</code></pre>
+    ├── service_list_spec.md
+    ├── toggle_service_spec.md
+    ├── manage_service_order_spec.md
+    ├── reset_service_order_spec.md
+    ├── localized_service_names_spec.md
+    ├── export_services_csv_spec.md
+    └── implementation_plan.md            # Living implementation plan</code></pre>
         </section>
 
       </div>
 
       <!-- FOOTER -->
       <footer>
-        <span>Squire Mobile Commander &mdash; Spec-Driven Development Framework v1.0</span>
+        <span>Squire Mobile Commander &mdash; Spec-Driven Development Framework v2.0</span>
         <span>Source: <a href="#">SPEC_DRIVEN_DEVELOPMENT.md</a></span>
       </footer>
     </main>

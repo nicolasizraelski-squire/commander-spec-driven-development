@@ -1228,7 +1228,13 @@
                 <p><strong>Every implementation PR must include updates to:</strong></p>
                 <p>1. Implementation plan &mdash; phase status, new decisions, gotchas, bug fixes<br>
                    2. Spec documents &mdash; if any behavior changed from the original spec</p>
-                <p>This is not optional. Stale docs are worse than no docs. Specs are the single source of truth &mdash; <span class="skill">/upload-jira</span> will synthesize Jira content from them after implementation.</p>
+                <p>This is not optional. Stale docs are worse than no docs.</p>
+              </div>
+            </div>
+            <div class="callout callout-info">
+              <span class="callout-icon">💡</span>
+              <div>
+                <p><strong>Why spec updates matter:</strong> When you discover during implementation that a behavior differs from the spec (e.g., "duration should allow 0 min" but the spec says "must be &gt; 0"), update the spec immediately &mdash; not just the code. The spec is what <span class="skill">/upload-jira</span> reads to generate acceptance criteria and test cases. If the spec is wrong, the Jira ticket will have wrong AC, and QA will file false bugs.</p>
               </div>
             </div>
           </div>

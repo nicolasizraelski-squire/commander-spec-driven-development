@@ -775,6 +775,7 @@
           <a href="#context-mgmt"><span class="nav-icon">🔄</span> Context Management</a>
           <a href="#step-8"><span class="nav-icon">8</span> Implement by Phase</a>
           <a href="#gotchas"><span class="nav-icon">⚡</span> Gotchas &amp; Lessons</a>
+          <a href="#known-gotchas-registry"><span class="nav-icon">📖</span> Known Gotchas Registry</a>
           <a href="#updating-docs"><span class="nav-icon">📝</span> Updating Documents</a>
           <a href="#step-9"><span class="nav-icon">9</span> Upload to Jira</a>
         </div>
@@ -1077,7 +1078,7 @@
             <ul>
               <li>All Figma links are valid and accessible</li>
               <li>All API endpoints exist in <code>@squire/api</code> or <code>src/api/</code></li>
-              <li>All three user types (Brand, Shop, Barber) are covered in every spec</li>
+              <li>All four user contexts (Barber, Shop, Brand-as-Admin, Brand-as-Shop) are covered in every spec</li>
               <li>Permissions match squire-app exactly (prompts you for any differences)</li>
               <li>Implementation plan consistency (if it exists)</li>
               <li><strong>Upload-readiness</strong> &mdash; checks that each spec has enough substantive content for <span class="skill">/upload-jira</span> to synthesize quality Jira fields (acceptance criteria, permissions, edge cases, etc.)</li>
@@ -1106,6 +1107,10 @@
               <li><strong>Phase 0: Shared Infrastructure</strong> (mandatory) &mdash; shared components, hooks, utilities, API methods, routes</li>
               <li><strong>Subsequent phases</strong> ordered by dependencies (list screens before forms, read before write)</li>
               <li><strong>Key architecture decisions</strong> pre-documented</li>
+              <li><strong>Known gotchas applied proactively</strong> from the <a href="#known-gotchas-registry">Known Gotchas Registry</a> as Implementation Notes per phase</li>
+              <li><strong>Web compatibility checklist</strong> verified for each phase (bottom sheets, StickyHeader, native-only modules, etc.)</li>
+              <li><strong>@squire/ui API audit</strong> &mdash; actual type definitions verified for planned component usage</li>
+              <li><strong>All four user contexts</strong> covered per phase: Barber, Shop, Brand-as-Admin, Brand-as-Shop</li>
               <li><strong>Empty sections</strong> for gotchas and bug fixes (populated during implementation)</li>
               <li><strong>Cleanup phase</strong> at the end (mandatory)</li>
             </ul>
@@ -1138,6 +1143,9 @@
               <li>Do the architecture decisions align with how you want to build it?</li>
               <li>Did it find and reuse existing codebase components instead of planning new ones?</li>
               <li>Are there similar components across phases that should be abstracted into shared pieces in Phase 0?</li>
+              <li>Were <strong>known gotchas</strong> from the registry applied as Implementation Notes? (e.g., Box in bottom sheets, StickyHeader padding, native-only modules)</li>
+              <li>Were <code>@squire/ui</code> component APIs verified against actual type definitions?</li>
+              <li>Are all <strong>four user contexts</strong> addressed per phase? (Barber, Shop, Brand-as-Admin, Brand-as-Shop)</li>
             </ul>
             <div class="callout callout-warn">
               <span class="callout-icon">⚡</span>
@@ -1216,6 +1224,40 @@
             </div>
           </div>
 
+          <!-- Known Gotchas Registry -->
+          <div class="step" id="known-gotchas-registry">
+            <div class="step-header">
+              <div class="step-num impl">📖</div>
+              <div class="step-title">Known Gotchas Registry</div>
+            </div>
+            <p>Feature-level gotchas are useful, but the same platform issues kept being rediscovered across features. The <strong>Known Gotchas Registry</strong> (<code>docs/KNOWN_GOTCHAS.md</code>) solves this by collecting <strong>project-wide recurring gotchas</strong> in one place.</p>
+
+            <h4>How it works:</h4>
+            <ul>
+              <li><span class="skill">/implementation-plan</span> reads the registry <strong>before</strong> generating a plan and applies relevant gotchas as Implementation Notes in each phase</li>
+              <li>After each implementation phase, if a gotcha is likely to affect future features (not just this one), add it to the registry</li>
+              <li>The registry is organized by category: Platform (RN Web), UI Library (@squire/ui), Infrastructure, User Identity, API/Data, Styling, Timezone</li>
+            </ul>
+
+            <h4>Categories of recurring gotchas (discovered across 12+ features):</h4>
+            <table>
+              <thead><tr><th>Category</th><th>Example</th><th>Features affected</th></tr></thead>
+              <tbody>
+                <tr><td>RN Web platform</td><td>Use <code>Box</code> instead of <code>View</code> inside bottom sheets</td><td>5+</td></tr>
+                <tr><td>@squire/ui API</td><td><code>Text</code> has no <code>color</code> prop, <code>Button</code> has no <code>destructive</code> variant</td><td>4+</td></tr>
+                <tr><td>Infrastructure</td><td><code>StickyHeader</code> needs <code>paddingTop</code> via <code>onHeightChange</code></td><td>4+</td></tr>
+                <tr><td>User identity</td><td><code>useUserIdentifier().isBrand</code> is <code>false</code> in brand-as-shop view</td><td>2+</td></tr>
+                <tr><td>API/Data</td><td>Amounts in cents, empty arrays <code>[]</code> ≠ "no filter"</td><td>3+</td></tr>
+                <tr><td>Navigation</td><td><code>beforeRemove</code> listener, not <code>handleBack</code>, for unsaved state</td><td>3+</td></tr>
+              </tbody>
+            </table>
+
+            <div class="callout">
+              <span class="callout-icon">💡</span>
+              <div><p><strong>Stable gotchas become CLAUDE.md rules.</strong> When a gotcha is well-understood and universally applicable, promote it to a Critical Rule in <code>CLAUDE.md</code> so it's enforced everywhere &mdash; not just in features that happen to read the registry.</p></div>
+            </div>
+          </div>
+
           <!-- Updating Docs -->
           <div class="step" id="updating-docs">
             <div class="step-header">
@@ -1290,11 +1332,15 @@ write the final spec to its file.</code><button class="copy-btn" onclick="copyCo
 by Phase &lt;N&gt;. Then, before writing any code:
 
 1. List what you understand Phase &lt;N&gt; requires.
-2. Review gotchas and decisions from previous phases — apply any
-   lessons that are relevant to this phase.
+2. Read docs/KNOWN_GOTCHAS.md and review gotchas from previous
+   phases — apply any relevant lessons to this phase.
 3. Search the codebase for existing components, hooks, or utilities
    that match what this phase needs. Reuse before creating.
-4. Flag anything that is ambiguous, under-specified, or where you'd
+4. For any @squire/ui components you plan to use, read their actual
+   types.ts to verify available props and variants.
+5. Consider all four user contexts: Barber, Shop, Brand-as-Admin,
+   Brand-as-Shop. Flag any that the spec doesn't cover.
+6. Flag anything that is ambiguous, under-specified, or where you'd
    have to guess — ask me about each one using AskUserQuestion.
 
 IMPORTANT: Respect the Figma designs exactly — texts, spacing, colors,
@@ -1399,6 +1445,7 @@ Fix them, then update all documentation:
           <h2 class="section-anchor">File Structure</h2>
           <p>All feature documentation lives under <code>docs/&lt;feature_name&gt;/</code>. Only specs and the implementation plan are stored in the repo &mdash; Jira content is synthesized on-demand by <span class="skill">/upload-jira</span>:</p>
           <pre><code>docs/
+├── KNOWN_GOTCHAS.md                      # Project-wide recurring gotchas registry
 └── services/
     ├── create_service_spec.md            # One spec file per ticket
     ├── edit_service_spec.md
